@@ -1,0 +1,11 @@
+POST http://localhost:3000/Chef
+Content-Type: application/json
+
+{
+    "name": "Gordon Ramsay",
+    "email": "gordon@cooking.com",
+    "password": "lambSauce"
+}
+
+###
+GET http://localhost:3000/User
