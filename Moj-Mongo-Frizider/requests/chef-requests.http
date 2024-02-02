@@ -2,8 +2,8 @@ POST http://localhost:3000/Chef
 Content-Type: application/json
 
 {
-    "name": "Gordon Ramsay",
-    "email": "gordon@cooking.com",
+    "name": "Rudolph",
+    "email": "rudolf@cooking.com",
     "password": "lambSauce"
 }
 
