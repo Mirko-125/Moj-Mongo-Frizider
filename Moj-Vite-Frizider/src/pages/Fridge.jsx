@@ -1,41 +1,31 @@
 import DisplayComponent from "../components/DIsplayComponent"
 import '../styles/Fridge.css'
 
-const Recipe =
-{
-    "cheff": "Chef",
-    "ingredients": [ "Ingredient" ],
-    "description": "Description",
-    "name": "Name",
-    "imageURL": "ImageURL",
-    "cuisine": "Cuisine",
-    "category": "Category",
-    "cookingType": "CookingType",
-    "likedBy": ["LikedBy"],
-    "budget": "Budget"
-}
-
 const Recipes = [
     {
-      name: "Purrsloud",
-      species: "Cat",
-      favFoods: ["wet food", "dry food", "<strong>any</strong> food"],
-      birthYear: 2016,
-      photo: "https://learnwebcode.github.io/json-example/images/cat-2.jpg"
+      name: "Tortelini sa pecurkama",
+      description: "Preukusni tortelini sa pecurkama i pavlakom",
+      cheff: "Grk iz leptokarije",
+      cuisine: "Greek",
+      cookingType: "Kuvano",
+      category: "Rucak",
+      ingredients: ["Tortelini", "Pecurke", "Pavlaka"],
+      likedBy: ["Me", "Myself", "I"],
+      budget: "€6",
+      photo: "https://boldbeanco.com/cdn/shop/articles/IMG_6361_1296x.jpg"
     },
     {
-      name: "Barksalot",
-      species: "Dog",
-      birthYear: 2008,
-      photo: "https://learnwebcode.github.io/json-example/images/dog-1.jpg"
-    },
-    {
-      name: "Meowsalot",
-      species: "Cat",
-      favFoods: ["tuna", "catnip", "celery"],
-      birthYear: 2012,
-      photo: "https://learnwebcode.github.io/json-example/images/cat-1.jpg"
-    }
+        name: "Pica",
+        description: "Socna vruca pica",
+        cheff: "Mirko",
+        cuisine: "Moja",
+        cookingType: "Peceno",
+        category: "Vecera",
+        ingredients: ["Testo", "Pecurke", "Sunka", "Kackavalj", "Paradajz sos"],
+        likedBy: ["Hana", "Jovana", "Una", "Jana"],
+        budget: "€2",
+        photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Supreme_pizza.jpg/800px-Supreme_pizza.jpg"
+      }
   ];
 
 function Fridge() {

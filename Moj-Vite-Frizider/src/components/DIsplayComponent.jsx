@@ -4,7 +4,7 @@ import '../styles/Recipes.css';
 function DisplayComponents(data) {
     function foods(foods) {
         return `
-      <h4>Favorite Foods</h4>
+      <h4>Ingredients</h4>
       <ul class="foods-list">
       ${foods.map(food => `<li>${food}</li>`).join("")}
       </ul>
@@ -16,9 +16,11 @@ function DisplayComponents(data) {
         if (appElement) {
             if (1) {
                 appElement.innerHTML = `
-                    <h1 class="app-title">Pets (${data.length} results)</h1>
-                    ${data.data.map(petTemplate).join("")}
-                    <p class="footer">These ${data.length} pets were added recently. Check back soon for updates.</p>
+                    <h1 class="app-title">Recipes (${data.data.length} results)</h1>
+                        <div class="recipe-grid">
+                            ${data.data.map(recipeTemplate).join("")}
+                        </div>
+                    <p class="footer">These ${data.data.length} recipes were added successfully. Check back soon for updates.</p>
                 `;
             } else {
                 appElement.innerHTML = `
@@ -28,13 +30,18 @@ function DisplayComponents(data) {
         }
     }, [data]);
 
-    function petTemplate(data) {
+    function recipeTemplate(data) {
         return `
-            <div class="animal">
-                <img class="pet-photo" src="${data.photo}">
-                <h2 class="pet-name">${data.name} <span class="species">(${data.species})</span></h2>
-                <p><strong>Age:</strong> ${data.birthYear}</p>
-                ${data.favFoods ? foods(data.favFoods) : ""}
+            <div class="recipe">
+                <img class="meal-photo" src="${data.photo}">
+                <h2 class="meal-name">${data.name} <span class="cuisine">(${data.cuisine})</span></h2>
+                <p>${data.description}</p>
+                <p>${data.cheff}</p>
+                <p><u>${data.cookingType}</u></p>
+                <p><u>${data.category}</u></p>
+                <p><strong>Budget:</strong> ${data.budget}</p>
+                ${data.ingredients ? foods(data.ingredients) : ""}
+                <p>${data.likedBy.length}🖤<p>
             </div>
         `;
     }
