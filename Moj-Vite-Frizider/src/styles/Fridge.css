@@ -1,0 +1,39 @@
+.fridge-page {
+    display: flex;
+    height: 100vh;
+}
+
+.diy-fridge .display-component {
+    flex: 1;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.diy-fridge {
+    background-color: #cb4064;
+    color: white;
+    flex-basis: 30%;
+    overflow-y: scroll; 
+    overflow-x: hidden;
+}
+
+.display-component {
+    background-color: gray;
+    flex-basis: 70%;
+}
+
+.searchbox {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    background-color: white;
+    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+    transition: box-shadow 0.3s ease;
+    border: #cb4065b9;
+}
+
+.searchbox:focus {
+    outline: none;
+    box-shadow: 0 0 5px #000000;
+}
