@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useSyncExternalStore } from 'react';
+import React, { useState, useEffect } from 'react';
 import DisplayComponent from "../components/DIsplayComponent"
 import '../styles/Fridge.css'
 

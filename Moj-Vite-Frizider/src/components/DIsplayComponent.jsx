@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import '../styles/Recipes.css';
 
 function DisplayComponents(data) {
-    
+
     function foods(foods) {
         return `
       <h4>Ingredients</h4>
