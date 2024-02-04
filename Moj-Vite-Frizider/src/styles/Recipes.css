@@ -23,6 +23,7 @@
   }
   
   .recipe {
+    user-select: none;    
     max-width: 650px;
     width: 350px;
     padding: 20px;
@@ -69,3 +70,30 @@
     grid-template-columns: repeat(3, 1fr);
     background-color: #f0c6d1;
   }
+
+  .details-button /* ovde treba jos da doradim, ne znam kako da napravim dugme da se spawnuje kako treba a da nas odvede na stranicu o detaljima jela */
+  {
+    float: right;
+    display: inline-block;
+    outline: 0;
+    appearance: none;
+    padding: 0px 12px;
+    border-radius: 4px;
+    text-decoration: none;
+    cursor: pointer;
+    background-color: rgb(249, 251, 250);
+    border: 1px solid rgb(137, 151, 155);
+    box-shadow: rgb(6 22 33 / 30%) 0px 1px 2px;
+    color: rgb(61, 79, 88);
+    font-size: 14px;
+    font-weight: 400;
+    height: 36px;
+    transition: all 150ms ease-in-out 0s;
+  }
+
+  .details-button:hover {
+    color: rgb(61, 79, 88);
+    background-color: rgb(255, 255, 255);
+    border: 1px solid rgb(93, 108, 116);
+    box-shadow: rgb(0 0 0 / 30%) 0px 4px 4px, rgb(231 238 236) 0px 0px 0px 3px;
+}
