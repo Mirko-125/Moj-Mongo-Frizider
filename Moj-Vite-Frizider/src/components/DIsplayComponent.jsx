@@ -31,8 +31,9 @@ function DisplayComponents(data) {
         }
     }, [data]);
 
-    function recipeTemplate(data) {
-        return `
+    function recipeTemplate(data) 
+    {
+        return (`
             <div class="recipe">
                 <img class="meal-photo" src="${data.photo}">
                 <h2 class="meal-name">${data.name} <span class="cuisine">(${data.cuisine})</span></h2>
@@ -43,8 +44,8 @@ function DisplayComponents(data) {
                 <p><strong>Budget:</strong> ${data.budget}</p>
                 ${data.ingredients ? foods(data.ingredients) : ""}
                 <p>${data.likedBy.length}🖤<p>
-            </div>
-        `;
+            </div>`
+        );
     }
 
     return (

@@ -70,7 +70,30 @@ const Ingredients = [
 function Fridge() {
   const [recipes, setRecipes] = useState([]);
   const [ingredients, setIngredients] = useState([]);
+  /* WIP
+  const handleSelectIngredient = (index) => {
+    const [isButtonAttached, setIsButtonAttached] = useState(false);
 
+    console.log(index);
+
+    useEffect(() => {
+      const ingredientsElement = document.getElementById("ingredients");
+      const buttonElement = document.getElementById(index.toString());
+
+      if (ingredientsElement && buttonElement) {
+        if (isButtonAttached) {
+          ingredientsElement.appendChild(buttonElement);
+        } else {
+          ingredientsElement.removeChild(buttonElement);
+        }
+      }
+    }, [isButtonAttached]);
+
+    const handleToggleButton = () => {
+      setIsButtonAttached(!isButtonAttached);
+    };
+  }
+  */
   useEffect(() => {
     setRecipes([
       // Your hardcoded recipes here...
@@ -83,10 +106,24 @@ function Fridge() {
     ]);
   }, []); // Empty dependency array means this effect runs once on mount
 
+  //handleSelectIngredient(index)
+
   return (
     <div className="fridge-page">
       <div className="diy-fridge">
         <input className="searchbox" type="text" placeholder="Search..."/>
+        <div className="ingredients">
+          <h3 id="ingredients" className="sub-title">Your ingredients</h3>
+            <div style={{ borderTop: '1px solid white' }}></div>
+          <h3 className="sub-title">Popular ingredients</h3>
+          <ul className="mini-ingredients">
+            {Ingredients.map((ingredient, index) => (
+              <button key={index} className="select-ingredient" onClick={() => alert("razmisljam.")}>
+                {ingredient.name}
+              </button>
+            ))}
+          </ul>
+        </div>
       </div>
       <DisplayComponent data={Recipes} className="display-component"/>
     </div>
