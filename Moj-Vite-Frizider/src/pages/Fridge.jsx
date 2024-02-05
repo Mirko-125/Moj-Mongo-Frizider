@@ -70,30 +70,23 @@ const Ingredients = [
 function Fridge() {
   const [recipes, setRecipes] = useState([]);
   const [ingredients, setIngredients] = useState([]);
-  /* WIP
-  const handleSelectIngredient = (index) => {
-    const [isButtonAttached, setIsButtonAttached] = useState(false);
+  let usedIngredients = [];
 
-    console.log(index);
-
-    useEffect(() => {
-      const ingredientsElement = document.getElementById("ingredients");
-      const buttonElement = document.getElementById(index.toString());
-
-      if (ingredientsElement && buttonElement) {
-        if (isButtonAttached) {
-          ingredientsElement.appendChild(buttonElement);
-        } else {
-          ingredientsElement.removeChild(buttonElement);
-        }
-      }
-    }, [isButtonAttached]);
-
-    const handleToggleButton = () => {
-      setIsButtonAttached(!isButtonAttached);
-    };
+  const handleSelectIngredient = (ingredient) => {
+    let ingredientArea = document.getElementById("ingredients");
+    if (!usedIngredients.includes(ingredient.name)) 
+    {
+      usedIngredients.push(ingredient.name);
+      const button = document.createElement("button");
+      button.className = "select-ingredient";
+      button.addEventListener("click", () => {
+        usedIngredients.indexOf(ingredient.name) > -1 && usedIngredients.splice(usedIngredients.indexOf(ingredient.name), 1);
+        button.remove(); });
+      button.textContent = ingredient.name;
+      ingredientArea.appendChild(button);
+    }
   }
-  */
+
   useEffect(() => {
     setRecipes([
       // Your hardcoded recipes here...
@@ -106,19 +99,19 @@ function Fridge() {
     ]);
   }, []); // Empty dependency array means this effect runs once on mount
 
-  //handleSelectIngredient(index)
 
   return (
     <div className="fridge-page">
       <div className="diy-fridge">
         <input className="searchbox" type="text" placeholder="Search..."/>
         <div className="ingredients">
-          <h3 id="ingredients" className="sub-title">Your ingredients</h3>
-            <div style={{ borderTop: '1px solid white' }}></div>
-          <h3 className="sub-title">Popular ingredients</h3>
+          <h3 className="sub-title">Your ingredients</h3>
+            <div id="ingredients" className="mini-ingredients"/>
+            <div style={{ borderTop: '0.1rem solid white', marginTop: '0.5rem' }}/>
+            <h3 className="sub-title">Popular ingredients</h3>
           <ul className="mini-ingredients">
             {Ingredients.map((ingredient, index) => (
-              <button key={index} className="select-ingredient" onClick={() => alert("razmisljam.")}>
+              <button key={index} className="select-ingredient" onClick={() => handleSelectIngredient(ingredient, index)}>
                 {ingredient.name}
               </button>
             ))}
@@ -129,5 +122,4 @@ function Fridge() {
     </div>
   )
 }
-
-export default Fridge
+export default Fridge;
