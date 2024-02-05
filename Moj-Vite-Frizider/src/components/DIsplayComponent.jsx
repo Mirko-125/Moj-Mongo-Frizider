@@ -44,6 +44,9 @@ function DisplayComponents(data) {
                 <p><strong>Budget:</strong> ${data.budget}</p>
                 ${data.ingredients ? foods(data.ingredients) : ""}
                 <p>${data.likedBy.length}🖤<p>
+                <a href="/${data.name}">
+                    <button class="details-button">Details</button>
+                </a>
             </div>`
         );
     }
