@@ -67,6 +67,41 @@ const Ingredients = [
   }
 ]
 
+const Categories = [
+  {
+    category: "Shrooms",
+    totalCount: 17,
+    names: [
+      "Mushrooms",
+      "Mushrooms2",
+      "Mushroom0",
+      "Mushroom1",
+      "Mushroom2",
+      "Mushroom3",
+      "Mushroom4",
+      "Mushroom5",
+      "Mushroom6",
+      "Mushroom7"
+    ]
+  },
+  {
+    category: "Vegetable",
+    totalCount: 15,
+    names: [
+      "Vegetable0",
+      "Vegetable1",
+      "Vegetable2",
+      "Vegetable3",
+      "Vegetable4",
+      "Vegetable5",
+      "Vegetable6",
+      "Vegetable7",
+      "Vegetable8",
+      "Vegetable9"
+    ]
+  }
+];
+
 function Fridge() {
   const [recipes, setRecipes] = useState([]);
   const [ingredients, setIngredients] = useState([]);
@@ -108,14 +143,18 @@ function Fridge() {
           <h3 className="sub-title">Your ingredients</h3>
             <div id="ingredients" className="mini-ingredients"/>
             <div style={{ borderTop: '0.1rem solid white', marginTop: '0.5rem' }}/>
-            <h3 className="sub-title">Popular ingredients</h3>
-          <ul className="mini-ingredients">
-            {Ingredients.map((ingredient, index) => (
-              <button key={index} className="select-ingredient" onClick={() => handleSelectIngredient(ingredient, index)}>
-                {ingredient.name}
-              </button>
-            ))}
-          </ul>
+              {Categories.map((category) =>(
+                <div key={category.category}>
+                  <h3 className="sub-title">{category.category}</h3>
+                  <div className="mini-ingredients">
+                  {Ingredients.map((ingredient, index) => (
+                    <button key={index} className="select-ingredient" onClick={() => handleSelectIngredient(ingredient, index)}>
+                      {ingredient.name}
+                    </button>
+                ))}
+                </div>
+              </div>
+              ))}
         </div>
       </div>
       <DisplayComponent data={Recipes} className="display-component"/>
