@@ -1,0 +1,259 @@
+import React, { useState, useEffect } from 'react';
+import '../styles/Dialog.css';
+import SearchableSelect from './SearchableSelect';
+
+function CuisinesDialog({ isOpen, onClose }) {
+    /*const [cuisines, setCuisines] = useState([]);*/
+    const [cuisineId, setCuisineId] = useState('');
+    const [cuisineName, setCuisineName] = useState('');
+    const [cuisineDescription, setCuisineDescription] = useState('');
+    const [cuisineRecipes, setCuisineRecipes] = useState([]);
+    const [singleCuisine, setSingleCuisine] = useState({});
+    const [selectedCuisine, setSelectedCuisine] = useState({});
+    const [showAdditionalInputs, setShowAdditionalInputs] = useState(false);
+    const [showAddButton, setShowAddButton] = useState(false);
+    const [showUpdateButton, setShowUpdateButton] = useState(false);
+    const [placeholder, setPlaceholder] = useState("");
+    const [key, setKey] = useState(0);
+    
+    {useEffect(() => {
+      setPlaceholder("Select cuisine...")
+      /*fetch('http://localhost:3000/GetAllCuisines')
+          .then(response => response.json())
+          .then(data => setCuisines(data));*/
+    }, []);}
+    
+    const cuisines = [
+        {
+          _id: "rggr2213",
+          name: "Kineska",
+          description: "aaaaaaaaaaaaaaaaaaaaa23456789",
+          recipeList: []
+        },
+        {
+          _id: "efe2wrwr3",
+          name: "Italijanska",
+          description: "bbbbbb",
+          recipeList: []
+        },
+        {
+          _id: "ewrw22213",
+          name: "Srpska",
+          description: "ccccccc",
+          recipeList: []
+        },
+        {
+          _id: "eafs213",
+          name: "Spanska",
+          description: "ddddddddd",
+          recipeList: []
+        },
+        {
+          _id: "efe222213",
+          name: "Ruska",
+          description: "eeeeeee",
+          recipeList: []
+        },
+        {
+          _id: "edvfe13",
+          name: "Norveska",
+          description: "fffff",
+          recipeList: []
+        },
+        {
+          _id: "efdef213",
+          name: "Grcka",
+          description: "gggggg",
+          recipeList: []
+        }
+    ];
+    
+    const handleSelect = (selectedOption) => {
+        setSelectedCuisine(selectedOption);
+        setCuisineId(selectedOption._id);
+        setCuisineName(selectedOption.name);
+        setCuisineDescription(selectedOption.description);
+        setCuisineRecipes(selectedOption.recipeList);
+    };
+
+    const handleRefreshPlaceholder = () => {
+        setPlaceholder('Select cuisine...');
+        // Increment the key to remount the component
+        setKey(prevKey => prevKey + 1);
+    };
+
+    const handleFindCuisine = () => {
+        setShowAdditionalInputs(true);
+        setShowUpdateButton(true);  
+    };
+
+    const handleCreateCuisine = () => {
+      {
+        setCuisineName("");
+        setCuisineDescription("");
+        setShowAdditionalInputs(true);
+        setShowAddButton(true);   
+      };
+    };
+
+    const AllInputsFilled = (name, description) => {
+        if (name == "" || description == "")
+        {
+          alert("Fill all inputs!");
+          return false;
+        }
+        else return true;
+    };
+    const handleUpdateCuisine = () => {
+      {
+        if (selectedCuisine.name == cuisineName  && selectedCuisine.description == cuisineDescription)
+        {
+            alert("Can't update, because informations about this cuisine are not changed!");
+            return;
+        }
+        if (!AllInputsFilled(cuisineName, cuisineDescription))
+        {
+            return;
+        }
+        const cuisineData = {
+            _id: cuisineId,
+            name: cuisineName,
+            description: cuisineDescription,
+        };
+        console.log(cuisineData);
+        {/*fetch('http://localhost:3000/updateCuisine', {
+          method: 'PUT',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(cuisineData)
+        })
+          .then(response => response.json())
+          .then(data => {
+              // Handle the response data if needed
+              console.log(data);
+          })
+          .catch(error => {
+              // Handle the error if needed
+              console.error(error);
+          });*/}
+          handleCancel();
+      };
+    };
+
+    const handleAddCuisine = () => {
+      {
+        if (!AllInputsFilled(cuisineName, cuisineDescription))
+        {
+          return;
+        }
+        const cuisineData = {
+            _id: cuisineId,
+            name: cuisineName,
+            description: cuisineDescription,
+        };
+        const data = JSON.stringify(cuisineData);
+        console.log(data);
+        {/*fetch('http://localhost:3000/createCuisine', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: data
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                window.location.reload();
+                return data;
+            })
+            .catch(error => {
+                // Handle the error if needed
+                console.error(error);
+            });*/}
+        handleCancel();
+      };
+    };
+
+    const handleDeleteCuisine = () => {
+      if (!AllInputsFilled(cuisineName, cuisineDescription))
+        {
+          return;
+        }
+      /*fetch(`http://localhost:3000/cuisineName=${cuisineName}`, {
+          method: 'DELETE'
+      })
+          .then(response => response.json())
+          .then(data => {
+              // Handle the response data if needed
+              console.log(data);
+          })
+          .catch(error => {
+              // Handle the error if needed
+              console.error(error);
+          });*/
+          handleCancel();
+    };
+    const handleCancel = () => {
+      {
+        setShowAdditionalInputs(false);
+        setShowUpdateButton(false);
+        setShowAddButton(false);
+        handleRefreshPlaceholder();
+        setCuisineName("");
+        setCuisineDescription("");
+      };
+    };
+
+    return (
+        <div style={{ display: isOpen ? 'block' : 'none'}}>
+          <div className="modal-content" >
+            <span className="close" onClick={() =>{onClose(); handleRefreshPlaceholder()}}>&times;</span>
+            <h3>Cuisines:</h3>
+            {!showAddButton&& (
+            <div>
+              <SearchableSelect key={key} options={cuisines} onSelect={handleSelect} placeholder={placeholder} />
+            </div>
+            )}
+            {!showAdditionalInputs && (
+              <div className='div-buttons'>
+                <button className='chef-button' onClick={handleFindCuisine}>Find cuisine</button>
+                <button className='chef-button' onClick={handleCreateCuisine}>Create cuisine</button>
+              </div>
+            )}
+            {showAdditionalInputs && (
+              <div className="additional-inputs">
+                <input 
+                  className="additional-input"
+                  type="text" 
+                  placeholder="name" 
+                  value={cuisineName}
+                  readOnly={showUpdateButton ? true : false}
+                  onChange={(e) => setCuisineName(e.target.value)}
+               />
+                <input 
+                  className="additional-input"
+                  type="text" 
+                  placeholder="description" 
+                  value={cuisineDescription} 
+                  onChange={(e) => setCuisineDescription(e.target.value)} 
+                  />
+                <div className='div-buttons'>
+                {showUpdateButton && (
+                  <button className='chef-button' onClick={handleUpdateCuisine}>Update cuisine</button>
+                )}
+                 {showAddButton && (
+                  <button className='chef-button' onClick={handleAddCuisine}>Add cuisine</button>
+                )}
+                {showUpdateButton && (
+                  <button className='chef-button' onClick={handleDeleteCuisine}>Delete cuisine</button>
+                )}
+                  <button className='chef-button' onClick={handleCancel}>Cancel</button>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      );
+}
+export default CuisinesDialog;
