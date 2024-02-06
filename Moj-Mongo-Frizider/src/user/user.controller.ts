@@ -1,15 +1,35 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Session, NotFoundException } from '@nestjs/common';
 import { UserService } from './user.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { CreateUserDto, LogUserDto, UpdateUserDto } from './dto/user.dto';
+import { UserInfo } from './dto/UserInfo';
+import { Chef } from './entities/chef.entity';
+import { User } from './entities/user.entity';
 
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.userService.create(createUserDto);
+  async create(@Body() createUserDto: CreateUserDto) {
+    const user = await this.userService.createUser(createUserDto);
+  }
+
+  @Post('login')
+  async logIn(@Body() logDto: LogUserDto, @Session() session: UserInfo){
+    const user = await this.userService.logIn(logDto);
+    if (!user) {
+      throw new NotFoundException('User not found');
+    } 
+    session.userId = user._id;
+    session.isChef = user.userType === "Chef";
+    return user;
+  }
+
+  @Post('logout')
+  async logOut(@Body() logDto: LogUserDto, @Session() session: UserInfo){
+    session.userId = null
+    session.isChef = null;
+    return session;
   }
 
   @Get()
@@ -17,18 +37,18 @@ export class UserController {
     return await this.userService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.userService.findOne(+id);
+  @Get(':name')
+  async findOne(@Param('name') name: string) {
+    return await this.userService.findOneByName(name);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.update(+id, updateUserDto);
+  @Patch()
+  async update(@Session() session: UserInfo, @Body() updateUserDto: UpdateUserDto) {
+    return await this.userService.update(session.userId, updateUserDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.userService.remove(+id);
+  @Delete()
+  remove(@Session() session: UserInfo) {
+    return this.userService.remove(session.userId);
   }
 }

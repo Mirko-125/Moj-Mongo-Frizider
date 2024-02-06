@@ -12,6 +12,8 @@ export class BaseUser extends Document {
 
     @Prop({unique: true})
     email: string;
+
+    userType?: string;
 }
 
 export const BaseUserSchema = SchemaFactory.createForClass(BaseUser);

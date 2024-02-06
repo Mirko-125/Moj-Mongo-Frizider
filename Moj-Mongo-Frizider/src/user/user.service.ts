@@ -1,12 +1,10 @@
-import { Injectable } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { CreateChefDto } from './dto/chef.dto';
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Chef } from './entities/chef.entity';
 import { User } from './entities/user.entity';
 import { BaseUser } from './entities/base-user.entity';
 import { Model } from 'mongoose';
+import { CreateUserDto, LogUserDto, UpdateUserDto } from './dto/user.dto';
 
 @Injectable()
 export class UserService {
@@ -16,27 +14,55 @@ export class UserService {
     @InjectModel('Chef') private readonly chefModel: Model<Chef>,
   ){}
 
-  create(createUserDto: CreateUserDto) {
+  async create(createUserDto: CreateUserDto) {
     return 'This action adds a new user';
   }
+  
+  async createUser(dto: CreateUserDto) {
+    if (await this.findOneByEmail(dto.email)){
+      throw new ConflictException("Email already in use");
+    }
+    if (await this.findOneByName(dto.name)){
+      throw new ConflictException("Name already in use");
+    }
+    const { isChef, ...userEntity } = dto;
+    if (isChef) {
+      return await new this.chefModel(userEntity).save(); 
+    }
+    return await new this.userModel(userEntity).save();
+  }
 
-  async createChef(createChefDto: CreateChefDto) {
-    return await new this.chefModel(createChefDto).save(); 
+  async logIn(dto: LogUserDto) {
+    const user = await this.baseUserModel.findOne({email: dto.email, password: dto.password}).exec();
+    return user;
   }
 
   async findAll() {
-    return await this.baseUserModel.find().exec();
+    return await this.baseUserModel.find().lean().exec();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findOneByName(name: string) {
+    return await this.baseUserModel.findOne({name: name}).exec();
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async findById(id: string) {
+    return await this.baseUserModel.findById(id).exec();
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async findOneByEmail(email: string) {
+    return await this.baseUserModel.findOne({email}).exec();
+  }
+
+  async update(id: string, updateUserDto: UpdateUserDto) {
+    const user = (await this.findById(id));
+    if (!user){
+      throw new NotFoundException("User not found");
+    }
+    const updatedUser = {...user, ...updateUserDto}
+    return await new this.chefModel(updatedUser).save();
+  }
+
+  async remove(id: string) {
+    return await this.baseUserModel.findByIdAndDelete(id).exec();
   }
 }

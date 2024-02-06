@@ -1,11 +1,37 @@
-POST http://localhost:3000/Chef
+POST http://localhost:3000/User
 Content-Type: application/json
 
 {
-    "name": "Rudolph",
-    "email": "rudolf@cooking.com",
-    "password": "lambSauce"
+    "name": "Gordon Ramsay",
+    "email": "gordon@cooking.com",
+    "password": "lambSauce",
+    "isChef": true
 }
 
 ###
 GET http://localhost:3000/User
+
+###
+POST http://localhost:3000/User/login
+Content-Type: application/json
+
+{
+    "email": "gordon@cooking.com",
+    "password": "lambSauce"
+}
+
+###
+POST http://localhost:3000/User/logout
+
+###
+POST http://localhost:3000/Ingredient
+Content-Type: application/json
+
+{
+    "name": "Mushrooms3",
+    "category": "Shrooms",
+    "budget": "Cheap"
+}
+
+###
+GET http://localhost:3000/Ingredient

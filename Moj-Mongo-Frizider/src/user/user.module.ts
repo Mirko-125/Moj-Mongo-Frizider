@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UserController } from './user.controller';
-import { ChefController } from './chef.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { BaseUserSchema } from './entities/base-user.entity';
 import { UserSchema } from './entities/user.entity';
@@ -16,7 +15,7 @@ import { ChefSchema } from './entities/chef.entity';
       ]}
     ])
   ],
-  controllers: [UserController, ChefController],
+  controllers: [UserController],
   providers: [UserService],
 })
 export class UserModule {}
