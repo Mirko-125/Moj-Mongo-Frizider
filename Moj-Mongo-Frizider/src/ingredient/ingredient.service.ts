@@ -20,7 +20,40 @@ export class IngredientService {
   }
 
   async findAll() {
-    return await this.model.find().exec();
+    const categories = await this.model.distinct('category').exec();
+    const promises = categories.map(async category => {
+      const pipeline = [
+        {
+          $facet: {
+            count: [
+              { $match: { category: { $eq: category }}},
+              { $count: "total" } 
+            ],
+            names: [
+              { $match: { category: { $eq: category }}},
+              { $limit: 10 },
+              { $project: {_id: 0, name: 1}}
+            ]
+          }
+        }
+      ];
+  
+      const [{ count, names }] = await this.model.aggregate(pipeline).exec();
+      const totalCount = count.length > 0 ? count[0].total : 0;
+      const nameList = names.map(entry => entry.name);
+
+      return { category, totalCount, names: nameList };
+    });
+  
+    const results = await Promise.all(promises);
+    console.log(JSON.stringify(results, null, 2));
+    return results;
+  }
+  
+
+
+  async findByType() {
+
   }
 
   async findOne(name: string) {
