@@ -1,11 +1,12 @@
 .login-page {
-    display: grid;
+    display: flex;
     grid-column: 1 / -1;
     grid-template-columns: 1fr 3fr;
     height: 100vh;
-    background: url("../assets/background.jpg") no-repeat fixed center;
+    background: url("/src/assets/back.png") no-repeat fixed center;
+    background-size: auto;
     background-size: cover;
-    
+    justify-content: center;
 }
 
 .login-input {

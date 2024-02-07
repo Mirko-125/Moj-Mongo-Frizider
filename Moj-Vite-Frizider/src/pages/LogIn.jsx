@@ -19,10 +19,7 @@ function LogIn() {
             email: email,
             password: password
         };
-
         ///////////////////////
-
-
         };
 
   return (
@@ -49,5 +46,4 @@ function LogIn() {
     </div>   
   )
 }
-
 export default LogIn

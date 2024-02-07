@@ -1,0 +1,233 @@
+.details-all
+{
+    background-color: #f0c6d1;
+}
+
+.main-header
+{
+    display: flex;
+    justify-content: flex-start;
+}   
+
+.thumb
+{
+    margin: 0.5rem;
+    border: grey 1px solid;    
+    box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
+    background-color: white;
+    width: 500px;
+    height: 500px;
+    object-fit: cover;
+    cursor: pointer;
+}
+
+.about
+{
+    border: 1px solid grey;
+    height: 500px;
+    margin: 0.5rem;
+    box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
+    width: 1000px;
+    background-color: white;
+}
+
+.title-desc
+{
+    font-size: 2rem;
+    font-weight: normal;
+    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+    padding: 0.5rem;
+    margin: 0;
+}
+
+.description-long
+{
+    padding: 0.5rem;
+    margin: 0;
+    font-size: larger;
+    user-select: text;
+}
+
+.tags
+{
+    margin: 0;
+    padding: 0.5rem;
+}
+
+.author
+{
+    padding: 0.5rem;
+    padding-right: 25px;
+    margin: 0;
+    font-size: larger;
+    float: right;
+    cursor: pointer;
+    color: #4B0082;
+}
+
+.money
+{
+    padding: 0.5rem;
+    margin: 0;
+    user-select: text;
+}
+
+.the-green
+{
+    color:#71BC78;
+    font-size: x-large;
+}
+
+.total
+{
+    color:#831843;
+}
+
+.lists
+{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.list
+{
+    border: 2px solid gray;
+    height: 250px;
+    box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
+    width: 100%;
+    background-color: #ffeaf6;
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
+
+.list-title
+{
+    font-size: 2rem;
+    font-weight: normal;
+    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+    padding: 0.5rem;
+    margin: 0;
+}
+
+.list-items
+{
+    padding: 0.5rem;
+    margin: 0;
+    font-size: x-large;
+    user-select: text;
+}
+
+.comment-section
+{
+    background-color: #ffeaf6;
+}
+
+.comments
+{
+    border: 2px solid gray;
+    height: 100%;
+    box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
+    width: 100%;
+    background-color: #ffeaf6;
+    margin-top: 25px;
+    margin-bottom: 25px;
+    display: flex;
+    flex-direction: column;
+    padding-left: 5px;
+    float: left;
+}
+
+.user-title{
+    width: 10%;
+    height: 25px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: normal;
+    border: 1px solid rgb(137, 151, 155);
+    transition: border-color 150ms ease-in-out 0s;
+    outline: none;
+    color: rgb(33, 49, 60);
+    background-color: rgb(255, 255, 255);
+    padding-right: 12px;
+    margin-top: 1rem;
+    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+}
+
+.user-title:hover{
+    box-shadow: rgb(231 238 236) 0px 0px 0px 3px;
+}
+
+.user-comment
+{
+    margin: 1rem;
+    font: 1em sans-serif;
+    width: 75%;
+    height: 125px;
+    resize: none;
+    outline: none;
+    border: 1px solid rgb(137, 151, 155);
+    border-radius: 4px;
+    box-shadow: rgb(6 22 33 / 30%) 0px 1px 2px;
+    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+}
+
+.user-post
+{
+    margin-top: 6.9rem;
+    display: inline-block;
+    outline: 0;
+    appearance: none;
+    padding: 0px 12px;
+    border-radius: 4px;
+    text-decoration: none;
+    cursor: pointer;
+    background-color: rgb(249, 251, 250);
+    border: 1px solid rgb(137, 151, 155);
+    box-shadow: rgb(6 22 33 / 30%) 0px 1px 2px;
+    color: rgb(61, 79, 88);
+    font-size: 14px;
+    font-weight: 400;
+    height: 36px;
+    transition: all 150ms ease-in-out 0s;
+}
+
+.user-post:hover {
+    color: rgb(61, 79, 88);
+    background-color: rgb(255, 255, 255);
+    border: 1px solid rgb(93, 108, 116);
+    box-shadow: rgb(0 0 0 / 30%) 0px 4px 4px, rgb(231 238 236) 0px 0px 0px 3px;
+}
+
+
+.post-comment
+{
+    border-radius: 5px;
+    padding-left: 45px;
+    border: 2px solid gray;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    width: 75%;
+    background-color: white;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+}
+
+.comment
+{
+    border-radius: 5px;
+    padding-left: 45px;
+    border: 2px solid gray;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    width: 75%;
+    background-color: white;
+}
+
+.comment-author
+{
+    font-size: x-large;
+    padding-top: 10px;
+    margin: 0;
+}
