@@ -5,6 +5,7 @@
     height: 100vh;
     background: url("../assets/background.jpg") no-repeat fixed center;
     background-size: cover;
+    
 }
 
 .login-input {
@@ -21,32 +22,26 @@
 }
 
 .create-input {
-    height: 3rem;
-    padding: 6px 12px;
-    font-size: 16px;
-    font-weight: 400;
-    line-height: 1.5;
-    color: #212529;
-    background-color: #fff;
-    background-clip: padding-box;
-    border: 1px solid #ced4da;
-    appearance: none;
+    width: 100%;
+    height: 36px;
     border-radius: 4px;
-    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    padding-left: 12px;
+    font-size: 14px;
+    font-weight: normal;
+    border: 1px solid rgb(137, 151, 155);
+    transition: border-color 150ms ease-in-out 0s;
+    outline: none;
+    color: rgb(33, 49, 60);
+    background-color: rgb(255, 255, 255);
+    padding-right: 12px;
 }
-
-.create-input:focus{
-    color: #212529;
-    background-color: #fff;
-    border-color: #86b7fe;
-    outline: 0;
-    box-shadow: 0 0 0 0.25rem rgb(13 110 253 / 25%);
+.create-input:hover{
+    box-shadow: rgb(231 238 236) 0px 0px 0px 3px;
 }
-  
 
 .create-btn {
-    margin-top: 12px;
-
+    margin: 0 auto;
+    display: block;
     display: inline-block;
     outline: 0;
     appearance: none;
