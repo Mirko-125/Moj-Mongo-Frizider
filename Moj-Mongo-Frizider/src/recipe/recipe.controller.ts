@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@n
 import { RecipeService } from './recipe.service';
 import { CreateRecipeDto } from './dto/create-recipe.dto';
 import { UpdateRecipeDto } from './dto/update-recipe.dto';
-import { ChefGuard } from 'src/user/decorator/chef.guard';
+import { ChefGuard } from 'src/user/guards/chef.guard';
 
 @UseGuards(ChefGuard)
 @Controller('recipe')
