@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { createBrowserRouter, RouterProvider, useNavigate } from 'react-router-dom';
 import '../styles/LogIn.css'
 import '../styles/Fridge.css'
 import '../styles/SignUp.css'
@@ -20,6 +21,8 @@ function SignUp() {
 
 
         };
+
+  const navigate = useNavigate();
 
   return (
     <div className="login-page">
@@ -49,10 +52,10 @@ function SignUp() {
                 onChange={(e) => setPassword(e.target.value)}
             /> 
 
-            <label for="checkbox"><input type="checkbox" id="checkbox" value="true" />Are you a chef?</label>
+            <label for="checkbox"><input className="checkbox-wrapper" type="checkbox" value="true" />Are you a chef?</label>
 
             <button className='create-btn' onClick={handleCreate}>Let's cook!</button>
-            <a className='create-link' href="LogIn">Already have an account?</a>
+            <a className='create-link' onClick={ () => navigate("/")}>Already have an account?</a>
     </div>  
     </div>   
   )

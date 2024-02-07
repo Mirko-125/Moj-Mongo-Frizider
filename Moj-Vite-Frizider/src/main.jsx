@@ -10,7 +10,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 const router = createBrowserRouter([
   { path: '/fridge', element: <Fridge />},
   { path: '/chef', element: <Chef />},
-  { path: '/login', element: <Login />},
+  { path: '/', element: <Login />},
   { path: '/signup', element: <Signup />}
 ]);
 
