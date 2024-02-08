@@ -26,7 +26,7 @@ function DisplayComponents(data)
                             <p><u>{data.category}</u></p>
                             <p><strong>Budget:</strong> {data.budget}</p>
                             <h4>Ingredients</h4>
-                                <ul className="foods-list">
+                                <ul className="foods-list"> 
                                   {data.ingredients.map(food => <li>{food}</li>)}
                                 </ul>
                             <p>{data.likedBy.length}🖤</p>

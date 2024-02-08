@@ -8,7 +8,13 @@ function DetailedRecipe() {
     const handleAuthorClick = () => 
     {
         console.log("Author clicked");
+        sessionStorage.setItem('cheff', JSON.stringify(Recipe));
         navigate(`/cheffportfolio/${Recipe.cheff}`);
+    }
+
+    const goBack = () =>
+    {
+        navigate(`/fridge`);
     }
 
     const Recipe = JSON.parse(sessionStorage.getItem('recipe'));
@@ -43,6 +49,7 @@ function DetailedRecipe() {
 
     return (
         <div className="details-all">
+            <button className="details-button edge" onClick={() => goBack()}>Back</button>
             <div className="main-header">
                 <img src={Recipe.photo} alt="There was no photo for this recipe" className="thumb" />
                 <div className="about">
