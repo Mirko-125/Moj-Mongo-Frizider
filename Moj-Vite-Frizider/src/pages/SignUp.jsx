@@ -8,6 +8,7 @@ function SignUp() {
     const [name, setName] = useState([]);
     const [email, setEmail] = useState([]);
     const [password, setPassword] = useState([]);
+    const [isChef, setIsChef] = useState(false);
 
     const navigate = useNavigate();
     
@@ -19,9 +20,22 @@ function SignUp() {
         const userData = {
             name: name,
             email: email,
-            password: password
+            password: password,
+            isChef: isChef
         };
-        };
+        fetch ("http://localhost:3000/User",  {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(userData)  
+        })
+        .then(response => {
+            if (response.ok) {
+                navigate('/fridge');
+            }
+        }) 
+    };
 
   return (
     <div className="login-page">
@@ -48,7 +62,7 @@ function SignUp() {
                 onChange={(e) => setPassword(e.target.value)}
             /> 
 
-            <label for="checkbox"><input className="checkbox-wrapper" type="checkbox" value="true" />Are you a chef?</label>
+            <label for="checkbox"><input className="checkbox-wrapper" type="checkbox" value={true} onChange={(e) => setIsChef(e.target.value)} />Are you a chef?</label>
 
             <button className='create-btn' onClick={handleCreate}>Let's cook!</button>
             <a className='create-link' onClick={goToLogin}>Already have an account?</a>

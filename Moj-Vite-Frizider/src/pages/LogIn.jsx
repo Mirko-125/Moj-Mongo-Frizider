@@ -1,7 +1,8 @@
+import { useNavigate } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import '../styles/LogIn.css'
 import '../styles/Fridge.css'
-import { useNavigate } from 'react-router-dom';
+
 
 function LogIn() {
     const [email, setEmail] = useState([]);
@@ -15,12 +16,23 @@ function LogIn() {
 
     const handleCreate = () => {
         const userData = {
-            name: name,
             email: email,
             password: password
         };
-        ///////////////////////
-        };
+        
+        fetch ("http://localhost:3000/User/login",  {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(userData)
+        })
+        .then(response => {
+            if (response.ok) {
+                navigate('/fridge');
+            }
+        }) 
+    };
 
   return (
     <div className="login-page">
@@ -40,7 +52,7 @@ function LogIn() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
             />
-            <button className='create-btn' onClick={handleCreate}>Login</button>
+            <button className='create-btn' onClick={()=>handleCreate()}>Login</button>
             <a className='create-link' onClick={goToSignUp}>Sign up for Moj Mongo Frižider</a>
     </div>  
     </div>   
