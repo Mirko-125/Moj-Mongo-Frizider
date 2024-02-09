@@ -42,3 +42,4 @@ export class Recipe extends Document{
 }
 
 export const RecipeSchema = SchemaFactory.createForClass(Recipe);
+

@@ -5,6 +5,7 @@ import { User } from './entities/user.entity';
 import { BaseUser } from './entities/base-user.entity';
 import { Model } from 'mongoose';
 import { CreateUserDto, LogUserDto, UpdateUserDto } from './dto/user.dto';
+import { ObjectId } from 'mongodb';
 
 @Injectable()
 export class UserService {
@@ -30,6 +31,15 @@ export class UserService {
       return await new this.chefModel(userEntity).save(); 
     }
     return await new this.userModel(userEntity).save();
+  }
+
+  async addRecipeToChef(chefId: string, recipeId: string){
+    console.log(chefId);
+    await this.chefModel.findByIdAndUpdate(chefId, { $addToSet: { recipes: new ObjectId(recipeId) }});
+  }
+
+  async removeRecipeFromChef(chefId: string, recipeId: string){
+    await this.chefModel.findByIdAndDelete(chefId, { $pull: { recipes: recipeId }});
   }
 
   async logIn(dto: LogUserDto) {

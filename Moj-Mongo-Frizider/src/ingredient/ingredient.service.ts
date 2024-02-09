@@ -9,7 +9,7 @@ import { Ingredient } from './entities/ingredient.entity';
 export class IngredientService {
   
   constructor(
-    @InjectModel('Ingredients') private readonly model: Model<Ingredient>,
+    @InjectModel('Ingredient') private readonly model: Model<Ingredient>,
   ){}
 
   async create(createIngredientDto: CreateIngredientDto) {
@@ -29,20 +29,19 @@ export class IngredientService {
               { $match: { category: { $eq: category }}},
               { $count: "total" } 
             ],
-            names: [
+            ingredients: [
               { $match: { category: { $eq: category }}},
               { $limit: 10 },
-              { $project: {_id: 0, name: 1}}
+              { $project: {_id: 1, name: 1}}
             ]
           }
         }
       ];
   
-      const [{ count, names }] = await this.model.aggregate(pipeline).exec();
+      const [{ count, ingredients }] = await this.model.aggregate(pipeline).exec();
       const totalCount = count.length > 0 ? count[0].total : 0;
-      const nameList = names.map(entry => entry.name);
 
-      return { category, totalCount, names: nameList };
+      return { category, totalCount, ingredients };
     });
   
     const results = await Promise.all(promises);
@@ -56,8 +55,8 @@ export class IngredientService {
 
   }
 
-  async findOne(name: string) {
-    return await this.model.findOne({name}).exec();
+  async findOne(id: string) {
+    return await this.model.findById(id).exec();
   }
 
   async update(name: string, updateIngredientDto: UpdateIngredientDto) {

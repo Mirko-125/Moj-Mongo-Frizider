@@ -1,26 +1,37 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { CreateCuisineDto } from './dto/create-cuisine.dto';
 import { UpdateCuisineDto } from './dto/update-cuisine.dto';
+import { Model } from 'mongoose';
+import { InjectModel } from '@nestjs/mongoose';
+import { Cuisine } from './entities/cuisine.entity';
 
 @Injectable()
 export class CuisineService {
-  create(createCuisineDto: CreateCuisineDto) {
-    return 'This action adds a new cuisine';
+  constructor(
+    @InjectModel('Cuisine') private readonly model: Model<Cuisine>,
+  ){}
+
+  async create(createCuisineDto: CreateCuisineDto) {
+    if (await this.model.findOne({name: createCuisineDto.name})) {
+      throw new ConflictException("This cuisine already exists!");
+    }
+    return await new this.model(createCuisineDto).save();
   }
 
-  findAll() {
-    return `This action returns all cuisine`;
+  async findAll() {
+    return await this.model.find().exec();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} cuisine`;
+  async findOne(id: string) {
+    return await this.model.findById(id);
   }
 
-  update(id: number, updateCuisineDto: UpdateCuisineDto) {
-    return `This action updates a #${id} cuisine`;
+  async update(id: string, updateCuisineDto: UpdateCuisineDto) {
+    const cuisine = await this.findOne(id);
+    return await new this.model({...cuisine, ...updateCuisineDto}).save();
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} cuisine`;
+  async remove(id: string) {
+    return await this.model.findByIdAndDelete(id).exec();
   }
 }

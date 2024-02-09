@@ -28,7 +28,7 @@ POST http://localhost:3000/Ingredient
 Content-Type: application/json
 
 {
-    "name": "Mushrooms3",
+    "name": "Mushrooms2",
     "category": "Shrooms",
     "budget": "Cheap"
 }

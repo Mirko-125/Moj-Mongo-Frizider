@@ -7,10 +7,11 @@ import { MongooseModule } from '@nestjs/mongoose';
 @Module({
   imports: [
     MongooseModule.forFeature([
-      {name: 'Ingredients', schema: IngredientSchema }
+      {name: 'Ingredient', schema: IngredientSchema }
     ])
   ],
   controllers: [IngredientController],
   providers: [IngredientService],
+  exports: [IngredientService]
 })
 export class IngredientModule {}

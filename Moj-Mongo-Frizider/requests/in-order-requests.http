@@ -1,0 +1,32 @@
+### Create Cuisine
+POST http://localhost:3000/Cuisine
+Content-Type: application/json
+
+{
+    "name": "Chinese",
+    "description": "Cuisine known for how its both healthy and tasty with low fats and sugars!"
+}
+
+### Create Recipe
+POST http://localhost:3000/Recipe
+Content-Type: application/json
+
+{
+    "name": "Shrooms!",
+    "imageURL": "string",
+    "description": "string",
+    "category": [
+        "Low Fat",
+        "Quick"
+        ],
+    "cookingType": "string",
+    "budget": "string",
+    "ingredientIds": [
+        "65c5f9b89a2510fdc96eb121",
+        "65c5f9a79a2510fdc96eb11e"
+        ],
+    "cuisineId": "65c5f9c29a2510fdc96eb124"
+}
+
+### Get Recipe
+GET http://localhost:3000/Recipe/65c5f9da9a2510fdc96eb126

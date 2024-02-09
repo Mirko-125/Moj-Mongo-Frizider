@@ -21,16 +21,16 @@ export class CuisineController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.cuisineService.findOne(+id);
+    return this.cuisineService.findOne(id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateCuisineDto: UpdateCuisineDto) {
-    return this.cuisineService.update(+id, updateCuisineDto);
+    return this.cuisineService.update(id, updateCuisineDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.cuisineService.remove(+id);
+    return this.cuisineService.remove(id);
   }
 }

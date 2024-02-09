@@ -17,5 +17,6 @@ import { ChefSchema } from './entities/chef.entity';
   ],
   controllers: [UserController],
   providers: [UserService],
+  exports: [UserService]
 })
 export class UserModule {}

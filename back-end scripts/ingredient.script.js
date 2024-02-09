@@ -18,7 +18,7 @@ async function postData() {
                 category: "Vegetable",
                 budget: "Medium"
             }
-            const response = await axios.post('http://localhost:3000/Ingredient', vegetable);
+            const response = await axios.post('http://localhost:3000/Ingredient', mushroom);
             console.log(`Posted: ${response.data}`);
         } catch (error) {
             console.error(`Error posting mushroom: ${error.message}`);
