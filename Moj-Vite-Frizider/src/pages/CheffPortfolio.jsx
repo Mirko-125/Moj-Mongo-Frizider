@@ -1,21 +1,37 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../styles/Recipes.css';
+import '../styles/CheffPortfolio.css';
 
-function DisplayComponents(data) 
-{
+function CheffPortfolio() {
+    const [data, setData] = React.useState({ data: [] });
+
+
+    const Cheff = JSON.parse(sessionStorage.getItem('cheff'));
+    // trena napisati funkciju koja vraca cheffa po imenu, i zameniti je sa hardkodiranim Cheffom
+
+    const HardCheff = 
+    {
+        name : "Mirko",
+        recipes : [ "pizza", "njorke", "tursija" ]
+    }
+
     const navigate = useNavigate();
 
-    function goToDetails(data) {
-        sessionStorage.setItem('recipe', JSON.stringify(data));
-        navigate(`/recipe/${data.name}`);
+    function goBack() 
+    {
+        navigate(`/recipe/${Cheff.name}`);
     }
 
     return (
         <>
-            <div id="app" className="display">
-                <h1 className="app-title">Recipes ({data.data.length} results)</h1>
-                <div className="recipe-grid">
+            <div>
+                <button className="details-button edge">Grant acces</button>
+                <button className="details-button edge" onClick={() => goBack()}>Back</button>
+            </div>
+            <div className="profile">
+                <h1>Cheff profile: {Cheff.cheff}</h1>
+            </div>
+            <div className="recipe-grid">
                     {data.data.map(data => (
                         <div className="recipe">
                             <img className="meal-photo" src={data.photo} alt="Meal Photo" />
@@ -35,8 +51,8 @@ function DisplayComponents(data)
                     ))}
                 </div>
                 <p className="footer">These {data.data.length} recipes were added successfully. Check back soon for updates.</p>
-            </div>
         </>
     );
 }
-export default DisplayComponents;
+
+export default CheffPortfolio;

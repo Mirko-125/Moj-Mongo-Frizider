@@ -1,28 +1,41 @@
+import { useNavigate } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import '../styles/LogIn.css'
 import '../styles/Fridge.css'
+
 
 function LogIn() {
     const [email, setEmail] = useState([]);
     const [password, setPassword] = useState([]);
     
+    const navigate = useNavigate();
+
+    const goToSignUp = () => {
+        navigate('/SignUp');  
+    }
+
     const handleCreate = () => {
         const userData = {
-            name: name,
             email: email,
             password: password
         };
-
-        ///////////////////////
-
-
-        };
+        
+        fetch ("http://localhost:3000/User/login",  {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(userData)
+        })
+        .then(response => {
+            if (response.ok) {
+                navigate('/fridge');
+            }
+        }) 
+    };
 
   return (
     <div className="login-page">
-      <div className="diy-fridge">
-        <input className="searchbox" type="text" placeholder="Search..."/>
-      </div>  
     <div className="login-input">
         <img className='create-logo' src="../src/assets/logo.png" />
             <input
@@ -39,11 +52,10 @@ function LogIn() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
             />
-            <button className='create-btn' onClick={handleCreate}>Login</button>
-            <a className='create-link' href="SignUp">Sign up for Moj Mongo Frižider</a>
+            <button className='create-btn' onClick={()=>handleCreate()}>Login</button>
+            <a className='create-link' onClick={goToSignUp}>Sign up for Moj Mongo Frižider</a>
     </div>  
     </div>   
   )
 }
-
 export default LogIn

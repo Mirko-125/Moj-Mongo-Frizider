@@ -1,10 +1,12 @@
 .login-page {
-    display: grid;
+    display: flex;
     grid-column: 1 / -1;
     grid-template-columns: 1fr 3fr;
     height: 100vh;
-    background: url("../assets/background.jpg") no-repeat fixed center;
+    background: url("/src/assets/back.png") no-repeat fixed center;
+    background-size: auto;
     background-size: cover;
+    justify-content: center;
 }
 
 .login-input {
@@ -21,13 +23,26 @@
 }
 
 .create-input {
-    height: 40px;
-    width: 300px;     
+    width: 100%;
+    height: 36px;
+    border-radius: 4px;
+    padding-left: 12px;
+    font-size: 14px;
+    font-weight: normal;
+    border: 1px solid rgb(137, 151, 155);
+    transition: border-color 150ms ease-in-out 0s;
+    outline: none;
+    color: rgb(33, 49, 60);
+    background-color: rgb(255, 255, 255);
+    padding-right: 12px;
+}
+.create-input:hover{
+    box-shadow: rgb(231 238 236) 0px 0px 0px 3px;
 }
 
 .create-btn {
-    margin-top: 12px;
-
+    margin: 0 auto;
+    display: block;
     display: inline-block;
     outline: 0;
     appearance: none;

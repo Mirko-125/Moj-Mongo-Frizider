@@ -71,7 +71,7 @@
     background-color: #f0c6d1;
   }
 
-  .details-button /* ovde treba jos da doradim, ne znam kako da napravim dugme da se spawnuje kako treba a da nas odvede na stranicu o detaljima jela */
+  .details-button 
   {
     float: right;
     display: inline-block;
