@@ -3,7 +3,7 @@ import '../styles/Dialog.css';
 import SearchableSelect from './SearchableSelect';
 
 function CuisinesDialog({ isOpen, onClose }) {
-    /*const [cuisines, setCuisines] = useState([]);*/
+    const [cuisines, setCuisines] = useState([]);
     const [cuisineId, setCuisineId] = useState('');
     const [cuisineName, setCuisineName] = useState('');
     const [cuisineDescription, setCuisineDescription] = useState('');
@@ -18,55 +18,10 @@ function CuisinesDialog({ isOpen, onClose }) {
     
     {useEffect(() => {
       setPlaceholder("Select cuisine...")
-      /*fetch('http://localhost:3000/GetAllCuisines')
+      fetch('http://localhost:3000/cuisine')
           .then(response => response.json())
-          .then(data => setCuisines(data));*/
+          .then(data => setCuisines(data));
     }, []);}
-    
-    const cuisines = [
-        {
-          _id: "rggr2213",
-          name: "Kineska",
-          description: "aaaaaaaaaaaaaaaaaaaaa23456789",
-          recipeList: []
-        },
-        {
-          _id: "efe2wrwr3",
-          name: "Italijanska",
-          description: "bbbbbb",
-          recipeList: []
-        },
-        {
-          _id: "ewrw22213",
-          name: "Srpska",
-          description: "ccccccc",
-          recipeList: []
-        },
-        {
-          _id: "eafs213",
-          name: "Spanska",
-          description: "ddddddddd",
-          recipeList: []
-        },
-        {
-          _id: "efe222213",
-          name: "Ruska",
-          description: "eeeeeee",
-          recipeList: []
-        },
-        {
-          _id: "edvfe13",
-          name: "Norveska",
-          description: "fffff",
-          recipeList: []
-        },
-        {
-          _id: "efdef213",
-          name: "Grcka",
-          description: "gggggg",
-          recipeList: []
-        }
-    ];
     
     const handleSelect = (selectedOption) => {
         setSelectedCuisine(selectedOption);
@@ -148,13 +103,12 @@ function CuisinesDialog({ isOpen, onClose }) {
           return;
         }
         const cuisineData = {
-            _id: cuisineId,
             name: cuisineName,
             description: cuisineDescription,
         };
         const data = JSON.stringify(cuisineData);
         console.log(data);
-        {/*fetch('http://localhost:3000/createCuisine', {
+        fetch('http://localhost:3000/cuisine', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -164,14 +118,14 @@ function CuisinesDialog({ isOpen, onClose }) {
             .then(response => response.json())
             .then(data => {
                 console.log(data);
-                window.location.reload();
+                //window.location.reload();
+                handleCancel();
                 return data;
             })
             .catch(error => {
                 // Handle the error if needed
                 console.error(error);
-            });*/}
-        handleCancel();
+            });
       };
     };
 
@@ -210,7 +164,7 @@ function CuisinesDialog({ isOpen, onClose }) {
           <div className="modal-content" >
             <span className="close" onClick={() =>{onClose(); handleRefreshPlaceholder()}}>&times;</span>
             <h3>Cuisines:</h3>
-            {!showAddButton&& (
+            {!showAddButton &&  (!showUpdateButton) && (
             <div>
               <SearchableSelect key={key} options={cuisines} onSelect={handleSelect} placeholder={placeholder} />
             </div>

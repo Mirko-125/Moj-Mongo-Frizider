@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/Dialog.css';
 import SearchableSelect from './SearchableSelect';
-
+const BASE_URL = 'http://localhost:3000';
 function IngredientsDialog({ isOpen, onClose }) {
-   /*const [ingredients, setIngredients] = useState([]);*/
+    const [ingredients, setIngredients] = useState([]);
     const [ingredientId, setIngredientId] = useState('');
     const [ingredientName, setIngredientName] = useState('');
     const [ingredientCategory, setIngredientCategory] = useState('');
@@ -16,64 +16,26 @@ function IngredientsDialog({ isOpen, onClose }) {
     const [placeholder, setPlaceholder] = useState("");
     const [key, setKey] = useState(0);
     
-    {useEffect(() => {
+    useEffect(() => {
       setPlaceholder("Select an ingredient...")
-      /*fetch('http://localhost:3000/GetAllIngredients')
+      fetch('http://localhost:3000/ingredient')
           .then(response => response.json())
-          .then(data => setIngredients(data));*/
-    }, []);}
+        .then(data => {
+          // Flatten the array of ingredients
+          const allIngredients = data.reduce((acc, category) => {
+            return [...acc, ...category.ingredients];
+          }, []);
+          setIngredients(allIngredients);
+        })
+        .catch(error => {
+          // Handle error if fetch fails
+          console.error('Error fetching ingredients:', error);
+        });
+    }, []);
     
-    const ingredients = [
-        {
-          _id: "rggr2213",
-          name: "Tortelini",
-          category: "Pasta",
-          budget: "€2"
-        },
-        {
-          _id: "efe2wrwr3",
-          name: "Pecurke",
-          category: "Povrce",
-          budget: "€2"
-        },
-        {
-          _id: "ewrw22213",
-          name: "Pavlaka",
-          category: "Mlecni proizvod",
-          budget: "€2"
-        },
-        {
-          _id: "eafs213",
-          name: "Testo",
-          category: "Pecivo",
-          budget: "€0.5"
-        },
-        {
-          _id: "efe222213",
-          name: "Sunka",
-          category: "Meso",
-          budget: "€0.5"
-        },
-        {
-          _id: "edvfe13",
-          name: "Kackavalj",
-          category: "Mlecni proizvod",
-          budget: "€0.5"
-        },
-        {
-          _id: "efdef213",
-          name: "Paradajz sos",
-          category: "Sos",
-          budget: "€0.5"
-        }
-      ];
 
     const handleSelect = (selectedOption) => {
       setSelectedIngredient(selectedOption);
-      setIngredientId(selectedOption._id);
-      setIngredientName(selectedOption.name);
-      setIngredientCategory(selectedOption.category);
-      setIngredientBudget(selectedOption.budget);
     };
 
     const handleRefreshPlaceholder = () => {
@@ -83,8 +45,22 @@ function IngredientsDialog({ isOpen, onClose }) {
     };
 
     const handleFindIngredient = () => {
-      setShowAdditionalInputs(true);
-      setShowUpdateButton(true);  
+      console.log(selectedIngredient.name)
+      fetch(`http://localhost:3000/ingredient/${selectedIngredient.name}`)
+        .then(response => response.json())
+        .then(data =>{
+          setIngredientName(data.name);
+          setIngredientCategory(data.category);
+          setIngredientBudget(data.budget);
+          console.log(data)
+          setShowAdditionalInputs(true);
+          setShowUpdateButton(true); 
+        })
+        .catch(error => {
+          // Handle error if fetch fails
+          console.error('Error fetching ingredients:', error);
+        });
+       
     };
 
     const handleCreateIngredient = () => {
@@ -120,29 +96,30 @@ function IngredientsDialog({ isOpen, onClose }) {
           return;
         }
         const ingredientData = {
-          _id: ingredientId,
           name: ingredientName,
           category: ingredientCategory,
           budget: ingredientBudget,
         };
-        console.log(ingredientData);
-        {/*fetch('http://localhost:3000/updateIngredient', {
+        const data = JSON.stringify(ingredientData);
+        console.log(data);
+        fetch(`http://localhost:3000/ingredient/${ingredientName}`, {
           method: 'PUT',
           headers: {
               'Content-Type': 'application/json'
           },
-          body: JSON.stringify(ingredientData)
-      })
+          body: data
+          })
           .then(response => response.json())
           .then(data => {
               // Handle the response data if needed
               console.log(data);
+              handleCancel();
           })
           .catch(error => {
               // Handle the error if needed
               console.error(error);
-          });*/}
-          handleCancel();
+          });
+          
       };
     };
 
@@ -159,7 +136,7 @@ function IngredientsDialog({ isOpen, onClose }) {
         };
         const data = JSON.stringify(ingredientData);
         console.log(data);
-        {/*fetch('http://localhost:3000/Ingredient', {
+        fetch('http://localhost:3000/ingredient', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -169,14 +146,15 @@ function IngredientsDialog({ isOpen, onClose }) {
             .then(response => response.json())
             .then(data => {
                 console.log(data);
-                window.location.reload();
+                //window.location.reload();
+                handleCancel();
                 return data;
             })
             .catch(error => {
                 // Handle the error if needed
                 console.error(error);
-            });*/}
-        handleCancel();
+            });
+        
       };
     };
 
@@ -185,19 +163,20 @@ function IngredientsDialog({ isOpen, onClose }) {
         {
           return;
         }
-      /*fetch(`http://localhost:3000/ingName=${ingredientName}`, {
+      fetch(`http://localhost:3000/ingredient/${ingredientName}`, {
           method: 'DELETE'
-      })
+        })
           .then(response => response.json())
           .then(data => {
               // Handle the response data if needed
               console.log(data);
+              handleCancel();
           })
           .catch(error => {
               // Handle the error if needed
               console.error(error);
-          });*/
-        handleCancel();
+          });
+        
     };
 
     const handleCancel = () => {
@@ -217,7 +196,7 @@ function IngredientsDialog({ isOpen, onClose }) {
       <div className="modal-content" >
         <span className="close" onClick={() =>{onClose(); handleRefreshPlaceholder()}}>&times;</span>
         <h3>Ingredients:</h3>
-        {!showAddButton&& (
+        {!showAddButton && (!showUpdateButton) &&(
         <div>
           <SearchableSelect key={key} options={ingredients} onSelect={handleSelect} placeholder={placeholder} />
         </div>

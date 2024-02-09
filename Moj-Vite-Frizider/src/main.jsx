@@ -7,6 +7,7 @@ import Chef from './pages/Chef.jsx'
 import Login from './pages/LogIn.jsx'
 import Signup from './pages/SignUp.jsx'
 import CheffPortfolio from './pages/CheffPortfolio.jsx'
+import CreateRecipe from './pages/CreateRecipe.jsx'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 const router = createBrowserRouter([
@@ -15,7 +16,8 @@ const router = createBrowserRouter([
   { path: '/', element: <Login />},
   { path: '/signup', element: <Signup />},
   { path: '/recipe/*', element: <Details />},
-  { path: '/cheffportfolio/*', element: <CheffPortfolio />}
+  { path: '/cheffportfolio/*', element: <CheffPortfolio />},
+  { path: '/createRecipe', element: <CreateRecipe />}
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')).render(

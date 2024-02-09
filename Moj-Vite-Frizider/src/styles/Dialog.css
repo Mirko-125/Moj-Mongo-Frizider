@@ -25,7 +25,9 @@
     }
     flex: 1; 
 }
-
+.tall{
+    flex: auto;
+}
 .div-buttons{
     display: flex;
     justify-content: space-between;

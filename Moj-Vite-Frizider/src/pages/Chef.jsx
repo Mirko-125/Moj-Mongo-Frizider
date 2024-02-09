@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import DisplayComponent from "../components/DIsplayComponent"
 import IngredientsDialog from '../components/IngradientsDialog';
 import CuisinesDialog from '../components/CuisinesDialog';
@@ -7,6 +8,7 @@ import '../styles/Fridge.css'
 
 
 function Chef() {
+    const [chefId, setChefId] = useState('');
     const [chefName, setChefName] = useState('');
     const [chefEmail, setChefEmail] = useState('');
     const [chefPassword, setChefPassword] = useState('');
@@ -15,6 +17,7 @@ function Chef() {
     const [singleChef, setSingleChef] = useState([]);
     const [showIngredientsDialog, setShowIngredientsDialog] = useState(false);
     const [showCuisinesDialog, setShowCuisinesDialog] = useState(false);
+    const navigate = useNavigate();
 
   const openIngredientsDialog = () => {
     setShowIngredientsDialog(true);
@@ -29,97 +32,10 @@ function Chef() {
   const closeCuisinesDialog = () => {
     setShowCuisinesDialog(false);
   };
-
-  const Chef={
-    name: "Maja Majic",
-    email: "mama@gmail.com",
-    password: "2463468",
-    recipes: [{
-      name: 'Recipe 1',
-      photo: 'https://posteraj.rs/cdn/shop/products/HPHIFO0034-Hrana_fotografije_losos_i_bilje_1200x630.jpg?v=1619170733',
-      chef:'neki',
-      ingredients:[{name:"jabuka", category:"voce", budget: "low"},{name:"kivi", category:"voce", budget: "low"}],
-      cuisine: {name:"Kineska",description:"aaaa"},
-      category: "Keto",
-      cookingType: "Zivo",
-      budget: "Budget friendly",
-      description: "aaaaaaaaaaaaa",
-      likedBy: ["Hana", "Jovana", "Una", "Jana"],
-    },
-    {
-      name: 'Slow Cooker Teriyaki Chicken',
-      photo: 'https://i.pinimg.com/236x/9f/89/c3/9f89c3c9d63e3e5ef6b2650461815c52.jpg',
-      chef:'neki',
-      ingredients:[{name:"jabuka", category:"voce", budget: "low"},{name:"kivi", category:"voce", budget: "low"}],
-      cuisine: {name:"Kineska", description:"aaaa"},
-      category: "Keto",
-      cookingType: "zivo",
-      budget: "budget friendly",
-      description: "bbbbbbbb",
-      likedBy: ["Hana", "Jovana", "Una", "Jana"],
-    },
-    {
-      name: 'Recipe 3',
-      photo: 'https://i.pinimg.com/236x/9f/89/c3/9f89c3c9d63e3e5ef6b2650461815c52.jpg',
-      chef:'neki',
-      ingredients:[{name:"jabuka", category:"voce", budget: "low"},{name:"kivi", category:"voce", budget: "low"}],
-      cuisine: {name:"Kineska",description:"aaaa"},
-      category: "keto",
-      cookingType: "zivo",
-      budget: "budget friendly",
-      description: "cccccccccc",
-      likedBy: ["Hana", "Jovana", "Una", "Jana"],
-    },
-    {
-      name: 'Recipe 4',
-      photo: 'https://i.pinimg.com/236x/9f/89/c3/9f89c3c9d63e3e5ef6b2650461815c52.jpg',
-      chef:'neki',
-      ingredients:[{name:"jabuka", category:"voce", budget: "low"},{name:"kivi", category:"voce", budget: "low"}],
-      cuisine: {name:"Kineska",description:"aaaa"},
-      category: "keto",
-      cookingType: "zivo",
-      budget: "budget friendly",
-      description: "dddddddddd",
-      likedBy: ["Hana", "Jovana", "Una", "Jana"],
-    },
-    {
-      name: 'Recipe 5',
-      photo: 'https://i.pinimg.com/236x/9f/89/c3/9f89c3c9d63e3e5ef6b2650461815c52.jpg',
-      chef:'neki',
-      ingredients:[{name:"jabuka", category:"voce", budget: "low"},{name:"kivi", category:"voce", budget: "low"}],
-      cuisine: {name:"Srpska",description:"aaaa"},
-      category: "keto",
-      cookingType: "zivo",
-      budget: "budget friendly",
-      description: "eeeeeeeeeeee",
-      likedBy: ["Hana", "Jovana", "Una", "Jana"],
-    },
-    {
-      name: 'Recipe 6',
-      photo: 'https://i.pinimg.com/236x/9f/89/c3/9f89c3c9d63e3e5ef6b2650461815c52.jpg',
-      chef:'neki',
-      ingredients:[{name:"jabuka", category:"voce", budget: "low"},{name:"kivi", category:"voce", budget: "low"}],
-      cuisine: {name:"Grcka",description:"aaaa"},
-      category: "keto",
-      cookingType: "zivo",
-      budget: "budget friendly",
-      description: "ffffffffffff",
-      likedBy: ["Hana", "Jovana", "Una", "Jana"],
-    },
-    {
-      name: 'Recipe 7',
-      photo: 'https://i.pinimg.com/236x/9f/89/c3/9f89c3c9d63e3e5ef6b2650461815c52.jpg',
-      chef:'neki',
-      ingredients:[{name:"jabuka", category:"voce", budget: "low"},{name:"kivi", category:"voce", budget: "low"}],
-      cuisine: {name:"Kineska",description:"aaaa"},
-      category: "keto",
-      cookingType: "zivo",
-      budget: "budget friendly",
-      description: "ggggggggggggg",
-      likedBy: ["Hana", "Jovana", "Una", "Jana"],
-    },
-  ],
-  };
+  
+  const handleCreateRecipe = () => {
+    navigate(`/createRecipe?chefName=${chefName}`);
+  }
 
     function compareCuisines(cuisine1, cuisine2) {
       return cuisine1.name === cuisine2.name && cuisine1.description === cuisine2.description;
@@ -127,7 +43,6 @@ function Chef() {
     
     function setUniqueCuisines(recipes) {
       const uniqueCuisines = [];
-    
       recipes.forEach(recipe => {
         const cuisine = recipe.cuisine;
         
@@ -140,22 +55,24 @@ function Chef() {
 
       setChefCuisines(uniqueCuisines);
     }
-    
+
     const handleFindChef = () => {
-      /*return fetch(`http://localhost:3000/User?userName=${chefName}`)
+      return fetch(`http://localhost:3000/user/Gordon Ramsay`)
           .then(response => response.json())
           .then(data => {
-              setSingleChef(data);
+            setChefId(data._id)
+            setChefName(data.name);
+            setChefEmail(data.email);
+            setChefPassword(data.password);
+            setChefRecipes(data.recipes);
+            setUniqueCuisines(data.cuisine);
+            console.log(data);
               return data;
           })
           .catch(error => {
               console.error(error);
-          });*/
-          setChefName(Chef.name);
-          setChefEmail(Chef.email);
-          setChefPassword(Chef.password);
-          setChefRecipes(Chef.recipes);
-          setUniqueCuisines(Chef.recipes);
+          });
+          
       };
 
       useEffect(() => {
@@ -167,7 +84,7 @@ function Chef() {
          <div className="diy-fridge">
             <div className='chef-info-crud'>
               <div className='chef-info'>
-                  <h2>Cheff:</h2>
+                  <h2>Chef:</h2>
                   <div>
                     <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQgHdEXBSYLS23_gZR0pROX5tjSZy4ZxuK4w&usqp=CAU" alt="chef-image" />
                   </div>
@@ -177,17 +94,18 @@ function Chef() {
               </div>
               <div className='crud-info'>
                 {!showIngredientsDialog && (
-                  <button className='chef-button' onClick={openIngredientsDialog}>Ingredients</button>
+                  <button className='chef-button tall' onClick={openIngredientsDialog}>Ingredients</button>
                 )}
                 <div>
                   <IngredientsDialog isOpen={showIngredientsDialog} onClose={closeIngredientsDialog} />
                 </div>
                 {!showCuisinesDialog && (
-                  <button className='chef-button' onClick={openCuisinesDialog}>Cuisines</button>
+                  <button className='chef-button tall' onClick={openCuisinesDialog}>Cuisines</button>
                 )}
                 <div>
                   <CuisinesDialog isOpen={showCuisinesDialog} onClose={closeCuisinesDialog} />
                 </div>
+                <button className='chef-button tall' onClick={() => handleCreateRecipe()}>Create new recipe</button>    
               </div>
             </div>
           </div>
