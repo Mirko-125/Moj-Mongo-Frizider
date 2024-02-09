@@ -21,8 +21,8 @@ export class RecipeController {
   }
 
   @Get()
-  findAll() {
-    return this.recipeService.findAll();
+  findAll(@Body() ingredients: string[]) {
+    return this.recipeService.findAll(ingredients);
   }
 
   @Patch(':id')

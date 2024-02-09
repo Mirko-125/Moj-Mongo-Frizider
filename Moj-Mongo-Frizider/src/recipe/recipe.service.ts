@@ -40,8 +40,40 @@ export class RecipeService {
     return recipe;
   }
 
-  async findAll() {
-    return await this.model.find().exec();
+  async findAll(requestedIngredients: string[]) {
+    const mappedIngredients = requestedIngredients.map(i => new ObjectId(i))
+    return await this.model.aggregate([
+      {
+          $addFields: {
+              mappedIngredients: mappedIngredients,
+              ingredientsCount: { $size: "$ingredients" }
+          }
+      },
+      {
+          $addFields: {
+              ingredientsSubset: {
+                  $setIsSubset: ["$ingredients", "$mappedIngredients"]
+              }
+          }
+      },
+      {
+          $match: {
+              ingredientsSubset: true
+          }
+      },
+      {
+        $sort: {
+          ingredientsCount: -1
+        }
+      },
+      {
+          $project: {
+              mappedIngredients: 0,
+              ingredientsSubset: 0,
+              ingredientsCount: 0
+          }
+      }
+    ]).exec();
   }
 
   async findRecipesWithCuisine(name: string) {

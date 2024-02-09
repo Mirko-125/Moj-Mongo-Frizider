@@ -13,7 +13,7 @@ export class IngredientService {
   ){}
 
   async create(createIngredientDto: CreateIngredientDto) {
-    if (await this.findOne(createIngredientDto.name)){
+    if (await this.findByName(createIngredientDto.name)){
       throw new ConflictException("This ingredient already exists!");
     }
     return await new this.model(createIngredientDto).save();
@@ -53,6 +53,10 @@ export class IngredientService {
 
   async findByType() {
 
+  }
+
+  async findByName(name: string) {
+    return await this.model.findOne({name}).exec();
   }
 
   async findOne(id: string) {
