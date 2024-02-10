@@ -11,8 +11,6 @@ function Chef() {
     const [chefId, setChefId] = useState('');
     const [chefName, setChefName] = useState('');
     const [chefEmail, setChefEmail] = useState('');
-    const [chefPassword, setChefPassword] = useState('');
-    const [chefCuisines, setChefCuisines] = useState([]);
     const [recipes, setChefRecipes] = useState([]);
     const [singleChef, setSingleChef] = useState([]);
     const [showIngredientsDialog, setShowIngredientsDialog] = useState(false);
@@ -37,31 +35,12 @@ function Chef() {
     navigate(`/createRecipe?chefName=${chefName}`);
   }
 
-    function compareCuisines(cuisine1, cuisine2) {
-      return cuisine1.name === cuisine2.name && cuisine1.description === cuisine2.description;
-    }
-    
-    function setUniqueCuisines(recipes) {
-      const uniqueCuisines = [];
-      recipes.forEach(recipe => {
-        const cuisine = recipe.cuisine;
-        
-        const existingCuisine = uniqueCuisines.find(uniqueCuisine => compareCuisines(uniqueCuisine, cuisine));
-    
-        if (!existingCuisine) {
-          uniqueCuisines.push(cuisine);
-        }
-      });
-
-      setChefCuisines(uniqueCuisines);
-    }
-
     const handleFindChef = () => {
       return fetch(`http://localhost:3000/user/getwithrecipes/Gordon Ramsay`)
           .then(response => response.json())
           .then(data => {
             console.log(data);
-            setChefId(data._id)
+            setChefId(data._id);
             setChefName(data.name);
             setChefEmail(data.email);
             setChefRecipes(data.recipes);
@@ -88,7 +67,6 @@ function Chef() {
                   </div>
                   Name: {chefName}<br/>
                   Email: {chefEmail}<br/>
-                  Cuisines: {chefCuisines.map(cuisine => cuisine.name).join(', ')}
               </div>
               <div className='crud-info'>
                 {!showIngredientsDialog && (

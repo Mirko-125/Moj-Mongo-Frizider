@@ -36,7 +36,8 @@
     background-color: rgb(255, 255, 255);
     padding-right: 12px;
 }
-.create-input:hover{
+
+.create-input:hover {
     box-shadow: rgb(231 238 236) 0px 0px 0px 3px;
 }
 
@@ -57,8 +58,7 @@
     font-size: 14px;
     font-weight: 400;
     height: 36px;
-    transition: all 150ms ease-in-out 0s;
-    
+    transition: all 150ms ease-in-out 0s;   
 }
 
 .create-btn:hover {
@@ -69,7 +69,8 @@
 }
 
 .create-link {
-    color:rgb(203, 64, 100);
+    color: aquamarine;
+    text-shadow: 0 0 3px #FF0000, 0 0 5px #0000FF; 
     text-decoration: none;
     font-weight: 600;
     margin-top: 15px; 

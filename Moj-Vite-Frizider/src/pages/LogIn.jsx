@@ -34,7 +34,7 @@ function LogIn() {
                 console.log(response)
                 navigate('/fridge');
             }
-        }) 
+        })
     };
 
   return (

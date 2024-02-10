@@ -15,13 +15,18 @@ function CuisinesDialog({ isOpen, onClose }) {
     const [showUpdateButton, setShowUpdateButton] = useState(false);
     const [placeholder, setPlaceholder] = useState("");
     const [key, setKey] = useState(0);
-    
+    const [reloadData, setReloadData] = useState(false);
+
+    const handleReloadData = () => {
+      setReloadData(prevState => !prevState);
+    };
+
     {useEffect(() => {
       setPlaceholder("Select cuisine...")
       fetch('http://localhost:3000/cuisine')
           .then(response => response.json())
           .then(data => setCuisines(data));
-    }, []);}
+    }, [reloadData]);}
     
     const handleSelect = (selectedOption) => {
         setSelectedCuisine(selectedOption);
@@ -71,28 +76,30 @@ function CuisinesDialog({ isOpen, onClose }) {
             return;
         }
         const cuisineData = {
-            _id: cuisineId,
             name: cuisineName,
             description: cuisineDescription,
         };
         console.log(cuisineData);
-        {/*fetch('http://localhost:3000/updateCuisine', {
-          method: 'PUT',
+        fetch(`http://localhost:3000/cuisine/${cuisineId}`, {
+          method: 'PATCH',
           headers: {
               'Content-Type': 'application/json'
           },
+          credentials: 'include',
           body: JSON.stringify(cuisineData)
         })
           .then(response => response.json())
           .then(data => {
               // Handle the response data if needed
               console.log(data);
+              handleReloadData();
+              handleCancel();
           })
           .catch(error => {
               // Handle the error if needed
               console.error(error);
-          });*/}
-          handleCancel();
+          });
+          
       };
     };
 
@@ -119,7 +126,7 @@ function CuisinesDialog({ isOpen, onClose }) {
             .then(response => response.json())
             .then(data => {
                 console.log(data);
-                //window.location.reload();
+                handleReloadData();
                 handleCancel();
                 return data;
             })
@@ -135,18 +142,19 @@ function CuisinesDialog({ isOpen, onClose }) {
         {
           return;
         }
-      /*fetch(`http://localhost:3000/cuisineName=${cuisineName}`, {
-          method: 'DELETE'
+      fetch(`http://localhost:3000/cuisine/${cuisineId}`, {
+          method: 'DELETE',
+          credentials: 'include',
       })
           .then(response => response.json())
           .then(data => {
-              // Handle the response data if needed
+              handleReloadData();
               console.log(data);
           })
           .catch(error => {
-              // Handle the error if needed
+              
               console.error(error);
-          });*/
+          });
           handleCancel();
     };
     const handleCancel = () => {

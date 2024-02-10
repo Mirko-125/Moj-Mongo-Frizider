@@ -1,16 +1,26 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/Recipes.css';
 
 function DisplayComponents(data) 
 {
     const navigate = useNavigate();
+    const [likedBy, setLikedBy] = useState([]);
 
     function goToDetails(data) {
         sessionStorage.setItem('recipe', JSON.stringify(data));
         navigate(`/recipe/${data.name}`);
     }
 
+    function handleLike(data) {
+        const updatedLikedBy = [...likedBy, data.id];
+        setLikedBy(updatedLikedBy);
+    }
+
+    const goToChef = () => {
+        navigate('/chef');  
+    }
+    
     return (
         <>
             <div id="app" className="display">
@@ -18,9 +28,11 @@ function DisplayComponents(data)
                 <div className="recipe-grid">
                     {data.data.map(data => (
                         <div className="recipe">
-                            <img className="meal-photo" src={data.photo} alt="Meal Photo" />
+                            <img className="meal-photo" src={data.imageURL} alt="Meal Photo" />
                             <h2 className="meal-name">{data.name} <span className="cuisine">({data.cuisine})</span></h2>
                             <p>{data.description}</p>
+                            {/* <p>{data.cheff}</p> */}
+                            <a className='chef-link' onClick={goToChef}>Chef</a>
                             <p>{data.chef}</p>
                             <p><u>{data.cookingType}</u></p>
                             <p><u>{data.category}</u></p>
@@ -30,6 +42,7 @@ function DisplayComponents(data)
                                   {data.ingredients.map(food => <li>{food}</li>)}
                                 </ul>
                             <p>{data.likedBy.length}🖤</p>
+                            <button onClick={() => handleLike(data)} className="like-button" disabled={likedBy.includes(data.id)}>Like</button>  
                             <button onClick={() => goToDetails(data)} className="details-button">Details</button>
                         </div>
                     ))}
