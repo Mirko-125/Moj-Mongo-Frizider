@@ -76,15 +76,16 @@ function CuisinesDialog({ isOpen, onClose }) {
             return;
         }
         const cuisineData = {
-
+            name: cuisineName,
             description: cuisineDescription,
         };
         console.log(cuisineData);
         fetch(`http://localhost:3000/cuisine/${cuisineId}`, {
-          method: 'PUT',
+          method: 'PATCH',
           headers: {
               'Content-Type': 'application/json'
           },
+          credentials: 'include',
           body: JSON.stringify(cuisineData)
         })
           .then(response => response.json())
@@ -142,7 +143,8 @@ function CuisinesDialog({ isOpen, onClose }) {
           return;
         }
       fetch(`http://localhost:3000/cuisine/${cuisineId}`, {
-          method: 'DELETE'
+          method: 'DELETE',
+          credentials: 'include',
       })
           .then(response => response.json())
           .then(data => {

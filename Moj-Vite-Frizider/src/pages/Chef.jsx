@@ -11,7 +11,6 @@ function Chef() {
     const [chefId, setChefId] = useState('');
     const [chefName, setChefName] = useState('');
     const [chefEmail, setChefEmail] = useState('');
-    const [chefCuisines, setChefCuisines] = useState([]);
     const [recipes, setChefRecipes] = useState([]);
     const [singleChef, setSingleChef] = useState([]);
     const [showIngredientsDialog, setShowIngredientsDialog] = useState(false);
@@ -45,7 +44,6 @@ function Chef() {
             setChefName(data.name);
             setChefEmail(data.email);
             setChefRecipes(data.recipes);
-            setUniqueCuisines(data.recipes);
               return data;
           })
           .catch(error => {

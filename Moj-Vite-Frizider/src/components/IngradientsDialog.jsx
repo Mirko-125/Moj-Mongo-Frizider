@@ -101,14 +101,13 @@ function IngredientsDialog({ isOpen, onClose }) {
           return;
         }
         const ingredientData = {
-          name: ingredientName,
           category: ingredientCategory,
           budget: ingredientBudget,
         };
         const data = JSON.stringify(ingredientData);
         console.log(data);
         fetch(`http://localhost:3000/ingredient/${ingredientName}`, {
-          method: 'PUT',
+          method: 'PATCH',
           headers: {
               'Content-Type': 'application/json',
               'withCredentials': 'true'

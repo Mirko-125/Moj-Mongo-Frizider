@@ -28,7 +28,7 @@ function DisplayComponents(data)
                 <div className="recipe-grid">
                     {data.data.map(data => (
                         <div className="recipe">
-                            <img className="meal-photo" src={data.photo} alt="Meal Photo" />
+                            <img className="meal-photo" src={data.imageURL} alt="Meal Photo" />
                             <h2 className="meal-name">{data.name} <span className="cuisine">({data.cuisine})</span></h2>
                             <p>{data.description}</p>
                             {/* <p>{data.cheff}</p> */}
