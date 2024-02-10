@@ -24,10 +24,9 @@ function LogIn() {
         fetch ('http://localhost:3000/User/login',  {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
-                "withCredentials": "true"
+                'Content-Type': 'application/json'
             },
-            withCredentials: true,
+            credentials: 'include',
             body: JSON.stringify(userData)
         })
         .then(response => {

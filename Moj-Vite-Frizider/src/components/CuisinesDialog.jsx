@@ -112,9 +112,8 @@ function CuisinesDialog({ isOpen, onClose }) {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                "withCredentials": "true",
             },
-            
+            credentials: 'include',
             body: data
         })
             .then(response => response.json())
