@@ -31,7 +31,7 @@ function LogIn() {
         })
         .then(response => {
             if (response.ok) {
-                console.log(response.userId)
+                console.log(response)
                 navigate('/fridge');
             }
         }) 

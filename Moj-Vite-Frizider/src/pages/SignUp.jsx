@@ -32,7 +32,7 @@ function SignUp() {
         })
         .then(response => {
             if (response.ok) {
-                navigate('/fridge');
+                navigate('/');
             }
         }) 
     };
