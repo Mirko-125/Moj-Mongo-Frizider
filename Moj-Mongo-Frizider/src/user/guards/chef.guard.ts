@@ -8,6 +8,7 @@ export class ChefGuard implements CanActivate {
   ): boolean | Promise<boolean> | Observable<boolean> {
     const req = context.switchToHttp().getRequest();
     const isGetMethod = req.method === 'GET';
-    return req.session.isChef || isGetMethod;
+    const isPutMethod = req.method === 'PUT';
+    return req.session.isChef || isGetMethod || isPutMethod;
   }
 }

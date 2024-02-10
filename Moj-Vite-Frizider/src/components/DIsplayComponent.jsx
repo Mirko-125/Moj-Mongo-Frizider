@@ -14,6 +14,11 @@ function DisplayComponents(data)
 
     function handleLike(data) {
         const updatedLikedBy = [...likedBy, data.id];
+        console.log(data);
+        fetch(`http://localhost:3000/recipe/${data._id}`, {
+            method: 'PUT',
+            credentials: 'include',
+        })
         setLikedBy(updatedLikedBy);
     }
 

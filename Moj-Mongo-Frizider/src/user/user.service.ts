@@ -34,8 +34,11 @@ export class UserService {
   }
 
   async addRecipeToChef(chefId: string, recipeId: string){
-    console.log(chefId);
     await this.chefModel.findByIdAndUpdate(chefId, { $addToSet: { recipes: new ObjectId(recipeId) }});
+  }
+
+  async addLiked(userId: string, recipeId: string){
+    await this.userModel.findByIdAndUpdate(userId, { $addToSet: { liked: new ObjectId(recipeId) }});
   }
 
   async getChefWithRecipes(name: string){

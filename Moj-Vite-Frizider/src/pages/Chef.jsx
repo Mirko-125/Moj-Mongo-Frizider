@@ -53,7 +53,9 @@ function Chef() {
       };
 
       useEffect(() => {
-        handleFindChef();
+        if (!chefName){
+          handleFindChef();
+        }
     }, []);
 
     return (
@@ -68,7 +70,7 @@ function Chef() {
                   Name: {chefName}<br/>
                   Email: {chefEmail}<br/>
               </div>
-              <div className='crud-info'>
+              {chefId == sessionStorage.getItem('userId') && (<div className='crud-info'>
                 {!showIngredientsDialog && (
                   <button className='chef-button tall' onClick={openIngredientsDialog}>Ingredients</button>
                 )}
@@ -82,9 +84,9 @@ function Chef() {
                   <CuisinesDialog isOpen={showCuisinesDialog} onClose={closeCuisinesDialog} />
                 </div>
                 <button className='chef-button tall' onClick={() => handleCreateRecipe()}>Create new recipe</button>    
-              </div>
-            </div>
-          </div>
+              </div> )}
+            </div> 
+          </div> 
         <DisplayComponent data={recipes} className="display-component"/>
       </div>
     )

@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Session } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Session, Put } from '@nestjs/common';
 import { RecipeService } from './recipe.service';
 import { CreateRecipeDto } from './dto/create-recipe.dto';
 import { UpdateRecipeDto } from './dto/update-recipe.dto';
@@ -21,6 +21,16 @@ export class RecipeController {
   }
 
   @Get()
+  getAll(){
+    return this.recipeService.getAll();
+  }
+
+  @Put(':id')
+  likePost(@Param('id') id: string, @Session() session: UserInfo) {
+    return this.recipeService.likeRecipe(session.userId, id);
+  }
+
+  @Put()
   findAll(@Body() ingredients: string[]) {
     return this.recipeService.findAll(ingredients);
   }

@@ -31,9 +31,13 @@ function LogIn() {
         })
         .then(response => {
             if (response.ok) {
-                console.log(response)
-                navigate('/fridge');
+                return response.json();
             }
+        })
+        .then(data => {
+            console.log(data);
+            sessionStorage.setItem('userId', data._id)
+            navigate('/fridge');
         })
     };
 

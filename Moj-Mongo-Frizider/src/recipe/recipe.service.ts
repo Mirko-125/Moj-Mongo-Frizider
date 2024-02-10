@@ -9,6 +9,7 @@ import { CuisineService } from 'src/cuisine/cuisine.service';
 import { ObjectId } from 'mongodb'; 
 import { IngredientService } from 'src/ingredient/ingredient.service';
 import { UserService } from 'src/user/user.service';
+import { User } from 'src/user/entities/user.entity';
 
 @Injectable()
 export class RecipeService {
@@ -41,7 +42,9 @@ export class RecipeService {
   }
 
   async findAll(requestedIngredients: string[]) {
-    const mappedIngredients = requestedIngredients.map(i => new ObjectId(i))
+    
+    const mappedIngredients = requestedIngredients.length ? 
+      requestedIngredients.map(i => new ObjectId(i)) : []; 
     return await this.model.aggregate([
       {
           $addFields: {
@@ -78,6 +81,24 @@ export class RecipeService {
 
   async findRecipesWithCuisine(name: string) {
     return await this.cuisineModel.find({name}).populate('recipes').exec();
+  }
+
+  async getAll(){
+    return await this.model.find().exec();
+  }
+
+  async likeRecipe(userId: string, recipeId: string) {
+    const user = await this.userService.findById(userId) as User;
+    const recipe = await this.findOne(recipeId);
+    if (recipe) {
+      if (!user.liked.includes(recipe._id))
+        this.userService.addLiked(user._id, recipe._id);
+    } else {
+      throw new NotFoundException("Recipe doesn't exist");
+    }
+    if (!recipe.likedBy.includes(user._id))
+      await this.model.findByIdAndUpdate(recipe._id, { $addToSet: { likedBy: new ObjectId(user._id) } }) 
+    return "Success";
   }
 
   async findOne(id: string) {

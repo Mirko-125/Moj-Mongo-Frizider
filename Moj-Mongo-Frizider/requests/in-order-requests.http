@@ -30,8 +30,11 @@ Content-Type: application/json
 ### Get Recipe
 GET http://localhost:3000/Recipe/65c5f9da9a2510fdc96eb126
 
-### Get Recipe By Ingredients
+### GET ALL
 GET http://localhost:3000/Recipe
+
+### Get Recipe By Ingredients
+PUT http://localhost:3000/Recipe
 Content-Type: application/json
 
 [
