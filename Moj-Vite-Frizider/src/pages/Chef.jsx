@@ -11,7 +11,6 @@ function Chef() {
     const [chefId, setChefId] = useState('');
     const [chefName, setChefName] = useState('');
     const [chefEmail, setChefEmail] = useState('');
-    const [chefPassword, setChefPassword] = useState('');
     const [chefCuisines, setChefCuisines] = useState([]);
     const [recipes, setChefRecipes] = useState([]);
     const [singleChef, setSingleChef] = useState([]);
@@ -61,7 +60,7 @@ function Chef() {
           .then(response => response.json())
           .then(data => {
             console.log(data);
-            setChefId(data._id)
+            setChefId(data._id);
             setChefName(data.name);
             setChefEmail(data.email);
             setChefRecipes(data.recipes);

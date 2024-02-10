@@ -15,6 +15,11 @@ function IngredientsDialog({ isOpen, onClose }) {
     const [showUpdateButton, setShowUpdateButton] = useState(false);
     const [placeholder, setPlaceholder] = useState("");
     const [key, setKey] = useState(0);
+    const [reloadData, setReloadData] = useState(false);
+
+    const handleReloadData = () => {
+      setReloadData(prevState => !prevState);
+    };
     
     useEffect(() => {
       setPlaceholder("Select an ingredient...")
@@ -31,7 +36,7 @@ function IngredientsDialog({ isOpen, onClose }) {
           // Handle error if fetch fails
           console.error('Error fetching ingredients:', error);
         });
-    }, []);
+    }, [handleReloadData]);
     
 
     const handleSelect = (selectedOption) => {
@@ -46,7 +51,7 @@ function IngredientsDialog({ isOpen, onClose }) {
 
     const handleFindIngredient = () => {
       console.log(selectedIngredient.name)
-      fetch(`http://localhost:3000/ingredient/${selectedIngredient.name}`)
+      fetch(`http://localhost:3000/ingredient/${selectedIngredient._id}`)
         .then(response => response.json())
         .then(data =>{
           setIngredientName(data.name);
@@ -105,7 +110,8 @@ function IngredientsDialog({ isOpen, onClose }) {
         fetch(`http://localhost:3000/ingredient/${ingredientName}`, {
           method: 'PUT',
           headers: {
-              'Content-Type': 'application/json'
+              'Content-Type': 'application/json',
+              'withCredentials': 'true'
           },
           body: data
           })
@@ -113,6 +119,7 @@ function IngredientsDialog({ isOpen, onClose }) {
           .then(data => {
               // Handle the response data if needed
               console.log(data);
+              handleReloadData();
               handleCancel();
           })
           .catch(error => {
@@ -139,14 +146,15 @@ function IngredientsDialog({ isOpen, onClose }) {
         fetch('http://localhost:3000/ingredient', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'withCredentials': 'true'
             },
             body: data
         })
             .then(response => response.json())
             .then(data => {
                 console.log(data);
-                //window.location.reload();
+                handleReloadData();
                 handleCancel();
                 return data;
             })
@@ -164,12 +172,16 @@ function IngredientsDialog({ isOpen, onClose }) {
           return;
         }
       fetch(`http://localhost:3000/ingredient/${ingredientName}`, {
-          method: 'DELETE'
+          method: 'DELETE',
+          headers: {
+            'withCredentials': 'true',
+        },
         })
           .then(response => response.json())
           .then(data => {
               // Handle the response data if needed
               console.log(data);
+              handleReloadData();
               handleCancel();
           })
           .catch(error => {
