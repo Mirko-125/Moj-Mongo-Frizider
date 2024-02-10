@@ -121,6 +121,7 @@ function CreateRecipe(){
         headers: {
             'Content-Type': 'application/json'
         },
+        credentials: 'include',
         body: data
     })
         .then(response => response.json())

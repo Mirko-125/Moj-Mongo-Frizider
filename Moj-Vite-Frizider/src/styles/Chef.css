@@ -11,12 +11,12 @@
    background-color: #d6456b;
 }
 
-.crud-info{
+.crud-info {
     display: flex;
     flex-direction: column; 
     justify-content: space-between;
 }
 
-.new-recipe{
+.new-recipe {
     display: flex;
 }

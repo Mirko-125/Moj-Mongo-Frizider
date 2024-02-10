@@ -1,19 +1,21 @@
-.recipe-page{
+.recipe-page {
     background-color: #f0c6d1;
     display: grid;
     grid-template-columns: 1fr 3fr 1fr;
 }
-.recipe-info{
+
+.recipe-info {
     background-color: whitesmoke;
     display: flex;
     flex-direction: column;
     padding: 20px;
 }
 
-.selectandbutton{
+.selectandbutton {
     display: grid;
     grid-template-columns: 5fr 1fr;
 }
+
 .createRecipe-input {
     height: 36px;
     border-radius: 4px;
@@ -27,15 +29,18 @@
     background-color: rgb(255, 255, 255);
     padding-right: 12px;
 }
-.createRecipe-input:hover{
+
+.createRecipe-input:hover {
     box-shadow: rgb(231 238 236) 0px 0px 0px 3px;
 }
-.label-choose{
+
+.label-choose {
     font-size: 14px;
     font-weight: bold;
     margin-left: 12px;
 }
-.add-recipe{
+
+.add-recipe {
     background-color: #f0c6d1;
     color: #d6456b;
     border-color: #d6456b;

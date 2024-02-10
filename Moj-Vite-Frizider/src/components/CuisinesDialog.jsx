@@ -117,8 +117,9 @@ function CuisinesDialog({ isOpen, onClose }) {
         fetch('http://localhost:3000/cuisine', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             },
+            credentials: 'include',
             body: data
         })
             .then(response => response.json())

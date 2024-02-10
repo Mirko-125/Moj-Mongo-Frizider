@@ -26,6 +26,18 @@ const Recipes = [
         likedBy: ["Hana", "Jovana", "Una", "Jana"],
         budget: "€2",
         photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Supreme_pizza.jpg/800px-Supreme_pizza.jpg"
+      },
+      {
+        name: "Pica",
+        description: "Socna vruca pica. Kod kuće nije lako napraviti pizzu. Minimalna temperatura potrebna za pečenje pizze je 350ᵒC ili 662ᵒF, a to je glavni problem, jer kućna pećnica ne postiže dovoljno visoku temperaturu da peče dobru pizzu. Ovaj video prikazuje da se i kod kuće može ispeći savršena pizza pomoću dvostrukog pečenja.",
+        cheff: "Mirko",
+        cuisine: "Moja",
+        cookingType: "Peceno",
+        category: "Vecera",
+        ingredients: ["Testo", "Pecurke", "Sunka", "Kackavalj", "Paradajz sos"],
+        likedBy: ["Hana", "Jovana", "Una", "Jana"],
+        budget: "€2",
+        photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Supreme_pizza.jpg/800px-Supreme_pizza.jpg"
       }
   ];
 

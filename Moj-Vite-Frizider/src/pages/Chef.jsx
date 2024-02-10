@@ -36,25 +36,6 @@ function Chef() {
     navigate(`/createRecipe?chefName=${chefName}`);
   }
 
-    function compareCuisines(cuisine1, cuisine2) {
-      return cuisine1.name === cuisine2.name && cuisine1.description === cuisine2.description;
-    }
-    
-    function setUniqueCuisines(recipes) {
-      const uniqueCuisines = [];
-      recipes.forEach(recipe => {
-        const cuisine = recipe.cuisine;
-        
-        const existingCuisine = uniqueCuisines.find(uniqueCuisine => compareCuisines(uniqueCuisine, cuisine));
-    
-        if (!existingCuisine) {
-          uniqueCuisines.push(cuisine);
-        }
-      });
-
-      setChefCuisines(uniqueCuisines);
-    }
-
     const handleFindChef = () => {
       return fetch(`http://localhost:3000/user/getwithrecipes/Gordon Ramsay`)
           .then(response => response.json())
@@ -64,6 +45,7 @@ function Chef() {
             setChefName(data.name);
             setChefEmail(data.email);
             setChefRecipes(data.recipes);
+            setUniqueCuisines(data.recipes);
               return data;
           })
           .catch(error => {
@@ -87,7 +69,6 @@ function Chef() {
                   </div>
                   Name: {chefName}<br/>
                   Email: {chefEmail}<br/>
-                  Cuisines: {chefCuisines.map(cuisine => cuisine.name).join(', ')}
               </div>
               <div className='crud-info'>
                 {!showIngredientsDialog && (
