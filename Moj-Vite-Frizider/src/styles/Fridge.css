@@ -40,13 +40,11 @@
     box-shadow: 0 0 5px #333;
 }
 
-.sub-title
-{
+.sub-title {
     text-align: center;
 }
 
-.mini-ingredients
-{
+.mini-ingredients {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -55,8 +53,7 @@
     gap: 1rem;
 }
 
-.select-ingredient
-{
+.select-ingredient {
     font-family: Helvetica, system-ui, Avenir, sans-serif;
     display: inline-block;
     outline: 0;

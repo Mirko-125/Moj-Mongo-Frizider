@@ -1,7 +1,8 @@
-.modal-content{
+.modal-content {
     background-color: #d6456b;
 }
-.chef-button{
+
+.chef-button {
     display: inline-block;
     outline: 0;
     appearance: none;
@@ -25,24 +26,29 @@
     }
     flex: 1; 
 }
-.tall{
+
+.tall {
     flex: auto;
 }
-.div-buttons{
+
+.div-buttons {
     display: flex;
     justify-content: space-between;
 }
-.additional-inputs{
+
+.additional-inputs {
     display: flex; 
     flex-direction: column; 
 }
-.additional-input{
+
+.additional-input {
     font-size: 14px;
     height: 25px;
     border-radius: 4px;
     margin: 7px; 
 }
-.close{
+
+.close {
     background-color:rgb(136, 136, 231);
     float: right;
 }

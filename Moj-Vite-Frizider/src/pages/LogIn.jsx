@@ -31,7 +31,7 @@ function LogIn() {
             if (response.ok) {
                 navigate('/fridge');
             }
-        }) 
+        })
     };
 
   return (
