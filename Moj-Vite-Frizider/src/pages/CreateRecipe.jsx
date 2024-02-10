@@ -132,7 +132,7 @@ function CreateRecipe(){
     };
     const data = JSON.stringify(recipeData);
     console.log(data);
-    {/*fetch('http://localhost:3000/Ingredient', {
+    {fetch('http://localhost:3000/Recipe', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -148,7 +148,7 @@ function CreateRecipe(){
         .catch(error => {
             // Handle the error if needed
             console.error(error);
-        });*/}
+        });}
         navigate(`/chef`)
   };
     return(

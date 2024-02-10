@@ -10,6 +10,13 @@ import CheffPortfolio from './pages/CheffPortfolio.jsx'
 import CreateRecipe from './pages/CreateRecipe.jsx'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
+// export const APIPath = ([suffixes]) => {
+//   console.log(suffixes);
+//   let api = 'http://localhost/3000';
+//   suffixes.forEach(s => api += '/' + s)
+//   return api;
+// }
+
 const router = createBrowserRouter([
   { path: '/fridge', element: <Fridge />},
   { path: '/chef', element: <Chef />},

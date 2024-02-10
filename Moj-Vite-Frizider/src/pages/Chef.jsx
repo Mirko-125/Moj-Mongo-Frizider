@@ -57,16 +57,14 @@ function Chef() {
     }
 
     const handleFindChef = () => {
-      return fetch(`http://localhost:3000/user/Gordon Ramsay`)
+      return fetch(`http://localhost:3000/user/getwithrecipes/Gordon Ramsay`)
           .then(response => response.json())
           .then(data => {
+            console.log(data);
             setChefId(data._id)
             setChefName(data.name);
             setChefEmail(data.email);
-            setChefPassword(data.password);
             setChefRecipes(data.recipes);
-            setUniqueCuisines(data.cuisine);
-            console.log(data);
               return data;
           })
           .catch(error => {

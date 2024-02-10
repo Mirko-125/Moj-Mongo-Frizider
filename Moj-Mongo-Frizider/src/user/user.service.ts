@@ -38,6 +38,13 @@ export class UserService {
     await this.chefModel.findByIdAndUpdate(chefId, { $addToSet: { recipes: new ObjectId(recipeId) }});
   }
 
+  async getChefWithRecipes(name: string){
+    console.log(name);
+    const chef = this.chefModel.findOne({name}).populate({path: 'recipes', model: 'Recipe'}).exec();
+    console.log(chef)
+    return chef;
+  }
+
   async removeRecipeFromChef(chefId: string, recipeId: string){
     await this.chefModel.findByIdAndDelete(chefId, { $pull: { recipes: recipeId }});
   }

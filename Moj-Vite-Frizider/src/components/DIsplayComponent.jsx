@@ -21,7 +21,7 @@ function DisplayComponents(data)
                             <img className="meal-photo" src={data.photo} alt="Meal Photo" />
                             <h2 className="meal-name">{data.name} <span className="cuisine">({data.cuisine})</span></h2>
                             <p>{data.description}</p>
-                            <p>{data.cheff}</p>
+                            <p>{data.chef}</p>
                             <p><u>{data.cookingType}</u></p>
                             <p><u>{data.category}</u></p>
                             <p><strong>Budget:</strong> {data.budget}</p>

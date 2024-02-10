@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import '../styles/LogIn.css'
 import '../styles/Fridge.css'
 
+const userRoute = 'User'
 
 function LogIn() {
     const [email, setEmail] = useState([]);
@@ -20,15 +21,18 @@ function LogIn() {
             password: password
         };
         
-        fetch ("http://localhost:3000/User/login",  {
+        fetch ('http://localhost:3000/User/login',  {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                "withCredentials": "true"
             },
+            withCredentials: true,
             body: JSON.stringify(userData)
         })
         .then(response => {
             if (response.ok) {
+                console.log(response.userId)
                 navigate('/fridge');
             }
         }) 
