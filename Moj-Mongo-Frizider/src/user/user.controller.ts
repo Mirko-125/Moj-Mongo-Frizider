@@ -33,6 +33,12 @@ export class UserController {
     return session;
   }
 
+  @Get('getwithrecipes/:name')
+  async getChefWithRecipes(@Param('name') name: string){
+    console.log("yes");
+    return await this.userService.getChefWithRecipes(name);
+  }
+
   @Get()
   async findAll() {
     return await this.userService.findAll();

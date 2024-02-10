@@ -33,6 +33,7 @@ function DisplayComponents(data)
                             <p>{data.description}</p>
                             {/* <p>{data.cheff}</p> */}
                             <a className='chef-link' onClick={goToChef}>Chef</a>
+                            <p>{data.chef}</p>
                             <p><u>{data.cookingType}</u></p>
                             <p><u>{data.category}</u></p>
                             <p><strong>Budget:</strong> {data.budget}</p>
