@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/DetailedRecipe.css';
 
 function DetailedRecipe() {
+    const [recommendations, setRecommendations] = useState([]);
     const navigate = useNavigate();
 
     const handleAuthorClick = () => 
@@ -16,6 +17,12 @@ function DetailedRecipe() {
     {
         navigate(`/fridge`);
     }
+
+    useEffect(() => {
+        fetch('http://localhost:3000/Recipe')
+            .then(response => response.json())
+            .then(data => setRecommendations(data));
+    }, []);
 
     const Recipe = JSON.parse(sessionStorage.getItem('recipe'));
 
@@ -76,6 +83,11 @@ function DetailedRecipe() {
                             <span>{like}, </span>
                         ))}
                     total of <span className="total">{Recipe.likedBy.length}</span> likes.</p>
+                </div>
+                <div className="list">
+                    <p className="list-title">Recommended by:</p> 
+                    <p className="list-items">
+                        <DisplayComponent data={recommendations} className="display-component"/></p> 
                 </div>
             </div>
             <div className="comment-section">
