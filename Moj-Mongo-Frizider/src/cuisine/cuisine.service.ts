@@ -27,8 +27,7 @@ export class CuisineService {
   }
 
   async update(id: string, updateCuisineDto: UpdateCuisineDto) {
-    const cuisine = await this.findOne(id);
-    return await new this.model({...cuisine, ...updateCuisineDto}).save();
+    return await this.model.findByIdAndUpdate(id, updateCuisineDto, { new: true });
   }
 
   async remove(id: string) {
