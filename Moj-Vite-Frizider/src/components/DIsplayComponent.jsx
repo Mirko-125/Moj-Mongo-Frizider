@@ -26,7 +26,7 @@ function DisplayComponents(data)
     }
 
     const goToChef = () => {
-        navigate('/chef');  
+        navigate('/chef/');  
     }
 
     async function handleCuisineName(cuisineId) {

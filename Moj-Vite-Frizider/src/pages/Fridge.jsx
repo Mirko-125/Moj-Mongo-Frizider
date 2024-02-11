@@ -7,7 +7,6 @@ function Fridge() {
   const [ingredients, setIngredients] = useState([]);
   const [categories, setCategories] = useState([]);
 
-  let usedIngredients = [];
 
   useEffect(() => {
     fetch('http://localhost:3000/recipe')
@@ -20,18 +19,19 @@ function Fridge() {
 
   const handleSelectIngredient = (ingredient) => {
     let ingredientArea = document.getElementById("ingredients");
-    if (!ingredients.includes(ingredient.name)) 
+    if (!ingredients.includes(ingredient)) 
     {
-      usedIngredients.push(ingredient.name);
+      setIngredients([...ingredients, ingredient]);
       const button = document.createElement("button");
       button.className = "select-ingredient";
       button.addEventListener("click", () => {
-        usedIngredients.indexOf(ingredient.name) > -1 && usedIngredients.splice(usedIngredients.indexOf(ingredient.name), 1);
+        console.log(ingredient);
+        setIngredients(prevIngredients => {
+          return prevIngredients.filter(i => i.name !== button.textContent)
+        });
         button.remove(); });
       button.textContent = ingredient.name;
       ingredientArea.appendChild(button);
-      setIngredients(usedIngredients);
-      console.log(ingredients);
     }
   }
 
@@ -46,7 +46,7 @@ function Fridge() {
      })
      .then(response => response.json())
      .then(data => {
-       //setRecipes(data);
+       setRecipes(data);
      })
    }, [ingredients]); // Empty dependency array means this effect runs once on mount
 
@@ -73,8 +73,8 @@ function Fridge() {
                 <div key={category.category}>
                   <h3 className="sub-title">{category.category}</h3>
                   <div className="mini-ingredients">
-                  {category.ingredients.map((ingredient, index) => (
-                    <button key={index} className="select-ingredient" onClick={() => handleSelectIngredient(ingredient, index)}>
+                  {category.ingredients.map((ingredient) => (
+                    <button key={ingredient._id} className="select-ingredient" onClick={() => handleSelectIngredient(ingredient)}>
                       {ingredient.name}
                     </button>
                 ))}
