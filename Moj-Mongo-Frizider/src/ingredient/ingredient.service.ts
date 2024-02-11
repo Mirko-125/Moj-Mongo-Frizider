@@ -48,8 +48,6 @@ export class IngredientService {
     console.log(JSON.stringify(results, null, 2));
     return results;
   }
-  
-
 
   async findByType() {
 

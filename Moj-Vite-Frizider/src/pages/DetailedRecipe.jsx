@@ -26,7 +26,7 @@ function DetailedRecipe() {
     }, []);*/
 
     useEffect(() => {
-        fetch('http://localhost:3000/Recipe')
+        fetch(`http://localhost:3000/recipe/getrecommendations/${recipeId}`)
             .then(response => response.json())
             .then(data => setRecommendations(data));
         fetch(`http://localhost:3000/recipe/${recipeId}`)

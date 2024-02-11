@@ -59,7 +59,7 @@ function Fridge() {
       })
       .then(response => response.json())
       .then(data => {
-        //setRecipes(data);
+        setRecipes(data);
       })
     } else {
       fetch('http://localhost:3000/recipe')

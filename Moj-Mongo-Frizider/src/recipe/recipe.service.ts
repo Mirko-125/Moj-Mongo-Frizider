@@ -127,7 +127,9 @@ export class RecipeService {
         $sort: { recommendationScore: -1 }
       },
       {
-        $skip: 1
+        $match: {
+          _id: { $ne: recipe._id }
+        }
       },
       {
         $lookup: {

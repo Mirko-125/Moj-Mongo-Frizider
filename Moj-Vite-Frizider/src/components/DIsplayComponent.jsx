@@ -6,11 +6,16 @@ import { Link } from 'react-router-dom';
 function DisplayComponents(data) 
 {
     const [likedBy, setLikedBy] = useState([]);
+    const navigate = useNavigate();
     
     useEffect(() => {
         console.log(data);
         
     }, [data]);
+
+    function goToDetails(data) {
+        navigate(`/recipe/${data._id}`)
+    }
 
     function handleLike(data) {
         const updatedLikedBy = [...likedBy, data.id];
@@ -22,63 +27,9 @@ function DisplayComponents(data)
         setLikedBy(updatedLikedBy);
     }
 
-    const goToChef = (chefName) => {
-       
-        return `/chef/${chefName}`;
+    function goToChef(chefName) {
+        navigate(`/chef/${chefName}`);
     }
-
-    // async function handleCuisineName(cuisineId) {
-    //     try {
-    //         const response = await fetch(`http://localhost:3000/cuisine/${cuisineId}`);
-    //         const data = await response.json();
-    //         return data.name;
-    //     } catch (error) {
-    //         console.error('Error fetching cuisine name:', error);
-    //         return ''; // Return an empty string in case of an error
-    //     }
-    // }
-
-
-    // function CuisineNameLoader({ cuisineId }) {
-    //     const [cuisineName, setCuisineName] = useState('');
-    
-    //     useEffect(() => {
-    //         handleCuisineName(cuisineId)
-    //             .then(name => {
-    //                 setCuisineName(name);
-    //             });
-    //     }, [cuisineId]);
-    
-    //     return (
-    //         <span className="cuisine">({cuisineName})</span>
-    //     );
-    // }
-
-    // async function handleChefName(chefId) {
-    //     try {
-    //         const response = await fetch(`http://localhost:3000/user/byid/${chefId}`);
-    //         const data = await response.json();
-    //         return data.name;
-    //     } catch (error) {
-    //         console.error('Error fetching chef name:', error);
-    //         return ''; // Return an empty string in case of an error
-    //     }
-    // }
-    
-    // function ChefNameLoader({ chefId }) {
-    //     const [chefName, setChefName] = useState('');
-    
-    //     useEffect(() => {
-    //         handleChefName(chefId)
-    //             .then(name => {
-    //                 setChefName(name);
-    //             });
-    //     }, [chefId]);
-    
-    //     return (
-    //         <span className="chef">by: {chefName}</span>
-    //     );
-    // }
     
     return (
         <>
@@ -87,10 +38,10 @@ function DisplayComponents(data)
                 <div className="recipe-grid">
                     {data.data.map(data => (
                         <div className="recipe" key={data._id}>
-                            <img className="meal-photo" src={data.imageURL} alt="Meal Photo" />
+                            <img className="meal-photo" src={data.imageURL || 'https://cdn.britannica.com/98/235798-050-3C3BA15D/Hamburger-and-french-fries-paper-box.jpg'} alt='adfg' />
                             <h2 className="meal-name">{data.name} <span className="cuisine">{data.cuisine.name}</span></h2>
                            {/*<p>{data.description}</p>*/}
-                            <a className='chef-link'onClick={goToChef}>{data.chef.name}</a>
+                            <a className='chef-link' onClick={() => goToChef(data.chef.name)}>{data.chef.name}</a>
                             <p><strong>Cooking type: </strong><u>{data.cookingType}</u></p>
                             <p><strong>Categories: </strong><u>{data.category.join(', ')}</u></p>
                             <p><strong>Budget:</strong> {data.budget}</p>
@@ -104,9 +55,7 @@ function DisplayComponents(data)
                         </div>
                     ))}
                 </div>
-                <p className="footer">These {data.data.length} recipes were added successfully. Check back soon for updates.</p>
             </div>
-            <p className="footer">These {data.data.length} recipes were added successfully. Check back soon for updates.</p>
         </>
     );
 }
