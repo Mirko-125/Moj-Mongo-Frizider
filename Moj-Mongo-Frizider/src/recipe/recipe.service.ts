@@ -6,6 +6,7 @@ import { Recipe } from './entities/recipe.entity';
 import { InjectModel } from '@nestjs/mongoose';
 import { Cuisine } from 'src/cuisine/entities/cuisine.entity';
 import { CuisineService } from 'src/cuisine/cuisine.service';
+import { UpdateRecipe } from './dto/create-recipe.dto';
 import { ObjectId } from 'mongodb'; 
 import { IngredientService } from 'src/ingredient/ingredient.service';
 import { UserService } from 'src/user/user.service';
@@ -104,23 +105,37 @@ export class RecipeService {
   async findOne(id: string) {
     return await this.model.findById(id)
       .populate([
-        {path: 'ingredients', model: 'Ingredient'},
-        {path: "chef", select: '-_id'},
+        { path: 'ingredients', model: 'Ingredient' },
+        { path: "chef" },
         "cuisine"
       ]).exec(); 
   }
 
   async update(chefId: string, id: string, updateRecipeDto: UpdateRecipeDto) {
     const recipe = await this.findOne(id);
+    const chefIdFromRecipe = recipe.chef._id.toString();
+    console.log(chefIdFromRecipe);
     if (recipe) {
-      if (recipe.chef.id != chefId) {
+      if (chefIdFromRecipe !== chefId) {
         throw new UnauthorizedException("This is not your recipe!");
       }
     }
     else {
       throw new NotFoundException("Recipe not found.")
     }
-    return await new this.model({...recipe, ...updateRecipeDto}).save()
+    let { ingredientIds, cuisineId, ...rest } = updateRecipeDto;
+    let updateRecipe: UpdateRecipe = { ...rest } as UpdateRecipe;
+    if (ingredientIds) {
+      const promises = ingredientIds.map(async p => {
+        return await this.ingredientService.findOne(p)
+      })
+      const ingredients = await Promise.all(promises);
+      updateRecipe.ingredients = ingredients.flatMap(i => i._id);
+    }
+    if (cuisineId) {
+      updateRecipe.cuisine = new ObjectId(cuisineId);
+    }
+    return await this.model.findByIdAndUpdate(id, updateRecipe, {new: true});
   }
 
   async remove(chefId: string, recipeId: string) {

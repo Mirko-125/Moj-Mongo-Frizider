@@ -7,12 +7,21 @@ Content-Type: application/json
     "description": "Cuisine known for how its both healthy and tasty with low fats and sugars!"
 }
 
+### Update Cuisine
+PATCH http://localhost:3000/Cuisine/65c5f9c29a2510fdc96eb124
+Content-Type: application/json
+
+{
+    "description": "asfdg for how its both healthy and tasty with low fats and sugars!"
+}
+
+
 ### Create Recipe
 POST http://localhost:3000/Recipe
 Content-Type: application/json
 
 {
-    "name": "Shrooms!",
+    "name": "Shrooms!!!!!",
     "imageURL": "string",
     "description": "string",
     "category": [
@@ -25,6 +34,18 @@ Content-Type: application/json
         "65c5f9b89a2510fdc96eb121"
         ],
     "cuisineId": "65c5f9c29a2510fdc96eb124"
+}
+
+### Update Recipe
+PATCH http://localhost:3000/Recipe/65c62ecb6d41bd801c7bee84
+Content-Type: application/json
+
+{
+    "ingredientIds": [
+        "65c5f9b89a2510fdc96eb121",
+        "65c5f9a79a2510fdc96eb11e",
+        "65c7c49df6ee5f3661098051"
+    ]
 }
 
 ### Get Recipe

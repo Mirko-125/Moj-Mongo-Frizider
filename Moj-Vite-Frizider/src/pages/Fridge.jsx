@@ -36,19 +36,29 @@ function Fridge() {
   }
 
    useEffect(() => {
-     const data = ingredients.flatMap(ing => ing._id);
-     fetch('http://localhost:3000/recipe', {
-       headers: {
-         'Content-Type': 'application/json'
-       },
-       method: 'PUT',
-       body: JSON.stringify(data)
-     })
-     .then(response => response.json())
-     .then(data => {
-       setRecipes(data);
-     })
-   }, [ingredients]); // Empty dependency array means this effect runs once on mount
+     const ingredientsData = ingredients.flatMap(ing => ing._id);
+     
+     if (ingredients.length > 0) {
+      console.log(ingredientsData, "asdfasdg");
+      fetch('http://localhost:3000/recipe', {
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        method: 'PUT',
+        body: JSON.stringify(ingredientsData)
+      })
+      .then(response => response.json())
+      .then(data => {
+        setRecipes(data);
+      })
+    } else {
+      fetch('http://localhost:3000/recipe')
+      .then(response => response.json())
+      .then(data => {
+        setRecipes(data);
+      })
+    }
+   }, [ingredients]);
 
   useEffect(() => {
     fetch('http://localhost:3000/ingredient')
@@ -57,8 +67,7 @@ function Fridge() {
       console.log(data);
       setCategories(data);
     })
-    setIngredients([])
-  }, []); 
+  }, []);   
 
 
   return (
