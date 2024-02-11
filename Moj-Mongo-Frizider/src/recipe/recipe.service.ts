@@ -104,6 +104,66 @@ export class RecipeService {
 
   async getRecommendations(id: string){
     const recipe = await this.findOne(id);
+    const recommendedRecipes = await this.model.aggregate([
+      {
+        $addFields: {
+          mutualLikes: { $size: { $setIntersection: ["$likedBy", recipe.likedBy] } },
+          mutualChefs: { $cond: { if: { $eq: ["$chef", recipe.chef] }, then: 1, else: 0 } },
+          mutualCuisine: { $cond: { if: { $eq: ["$cuisine", recipe.cuisine] }, then: 1, else: 0 } }
+        }
+      },
+      {
+        $addFields: {
+          recommendationScore: {
+            $sum: [
+              { $multiply: ["$mutualLikes", 1] },
+              { $multiply: ["$mutualChefs", 20] },
+              { $multiply: ["$mutualCuisine", 30] }
+            ]
+          }
+        }
+      },
+      {
+        $sort: { recommendationScore: -1 }
+      },
+      {
+        $skip: 1
+      },
+      {
+        $lookup: {
+          from: 'users',
+          localField: 'chef',
+          foreignField: '_id',
+          as: 'chef'
+        }
+      },
+      {
+        $lookup: {
+          from: 'cuisines',
+          localField: 'cuisine',
+          foreignField: '_id',
+          as: 'cuisine'
+        }
+      },
+      {
+        $limit : 10
+      },
+      {
+        $project : {
+          mutualLikes: 0,
+          mutualChefs: 0,
+          mutualCuisine: 0,
+          recommendationScore: 0,
+          'chef.password': 0,
+          'chef.recipes': 0 
+        }
+      }
+    ]).exec();
+
+    return recommendedRecipes;
+    
+    // recommendedRecipes now contains the sorted list of recommended recipes
+    
     
   }
 

@@ -11,46 +11,46 @@ export class RecipeController {
   constructor(private readonly recipeService: RecipeService) {}
 
   @Post()
-  create(@Session() session: UserInfo, @Body() createRecipeDto: CreateRecipeDto) {
-    return this.recipeService.create(session.userId, createRecipeDto);
+  async create(@Session() session: UserInfo, @Body() createRecipeDto: CreateRecipeDto) {
+    return await this.recipeService.create(session.userId, createRecipeDto);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.recipeService.findOne(id);
+  async findOne(@Param('id') id: string) {
+    return await this.recipeService.findOne(id);
   }
 
-  @Get('/getrecommendations')
-  getRecommendations(@Param('id') id: string) {
-    return this.recipeService.getRecommendations(id);
+  @Get('/getrecommendations/:id')
+  async getRecommendations(@Param('id') id: string) {
+    return await this.recipeService.getRecommendations(id);
   }
 
   @Get()
-  getAll(){
-    return this.recipeService.getAll();
+  async getAll(){
+    return await this.recipeService.getAll();
   }
 
   @Put(':id')
-  likePost(@Param('id') id: string, @Session() session: UserInfo) {
-    return this.recipeService.likeRecipe(session.userId, id);
+  async likePost(@Param('id') id: string, @Session() session: UserInfo) {
+    return await this.recipeService.likeRecipe(session.userId, id);
   }
 
   @Put()
-  findAll(@Body() ingredients: string[]) {
-    return this.recipeService.findAll(ingredients);
+  async findAll(@Body() ingredients: string[]) {
+    return await this.recipeService.findAll(ingredients);
   }
 
   @Patch(':id')
-  update(
+  async update(
     @Session() session: UserInfo,
     @Param('id') id: string, 
     @Body() updateRecipeDto: UpdateRecipeDto
   ) {
-    return this.recipeService.update(session.userId, id, updateRecipeDto);
+    return await this.recipeService.update(session.userId, id, updateRecipeDto);
   }
 
   @Delete(':id')
-  remove(@Session() session: UserInfo, @Param('id') id: string) {
-    return this.recipeService.remove(session.userId, id);
+  async remove(@Session() session: UserInfo, @Param('id') id: string) {
+    return await this.recipeService.remove(session.userId, id);
   }
 }
