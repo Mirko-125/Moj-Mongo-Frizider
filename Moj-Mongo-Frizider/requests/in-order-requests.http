@@ -63,3 +63,6 @@ Content-Type: application/json
    "65c5f9a79a2510fdc96eb11e",
    "65c7c49df6ee5f3661098051"
 ]
+
+### Get recommendations
+GET http://localhost:3000/Recipe/getrecommendations/65c62ecb6d41bd801c7bee84

@@ -29,58 +29,58 @@ function DisplayComponents(data)
         navigate('/chef/');  
     }
 
-    async function handleCuisineName(cuisineId) {
-        try {
-            const response = await fetch(`http://localhost:3000/cuisine/${cuisineId}`);
-            const data = await response.json();
-            return data.name;
-        } catch (error) {
-            console.error('Error fetching cuisine name:', error);
-            return ''; // Return an empty string in case of an error
-        }
-    }
+    // async function handleCuisineName(cuisineId) {
+    //     try {
+    //         const response = await fetch(`http://localhost:3000/cuisine/${cuisineId}`);
+    //         const data = await response.json();
+    //         return data.name;
+    //     } catch (error) {
+    //         console.error('Error fetching cuisine name:', error);
+    //         return ''; // Return an empty string in case of an error
+    //     }
+    // }
 
 
-    function CuisineNameLoader({ cuisineId }) {
-        const [cuisineName, setCuisineName] = useState('');
+    // function CuisineNameLoader({ cuisineId }) {
+    //     const [cuisineName, setCuisineName] = useState('');
     
-        useEffect(() => {
-            handleCuisineName(cuisineId)
-                .then(name => {
-                    setCuisineName(name);
-                });
-        }, [cuisineId]);
+    //     useEffect(() => {
+    //         handleCuisineName(cuisineId)
+    //             .then(name => {
+    //                 setCuisineName(name);
+    //             });
+    //     }, [cuisineId]);
     
-        return (
-            <span className="cuisine">({cuisineName})</span>
-        );
-    }
+    //     return (
+    //         <span className="cuisine">({cuisineName})</span>
+    //     );
+    // }
 
-    async function handleChefName(chefId) {
-        try {
-            const response = await fetch(`http://localhost:3000/user/byid/${chefId}`);
-            const data = await response.json();
-            return data.name;
-        } catch (error) {
-            console.error('Error fetching chef name:', error);
-            return ''; // Return an empty string in case of an error
-        }
-    }
+    // async function handleChefName(chefId) {
+    //     try {
+    //         const response = await fetch(`http://localhost:3000/user/byid/${chefId}`);
+    //         const data = await response.json();
+    //         return data.name;
+    //     } catch (error) {
+    //         console.error('Error fetching chef name:', error);
+    //         return ''; // Return an empty string in case of an error
+    //     }
+    // }
     
-    function ChefNameLoader({ chefId }) {
-        const [chefName, setChefName] = useState('');
+    // function ChefNameLoader({ chefId }) {
+    //     const [chefName, setChefName] = useState('');
     
-        useEffect(() => {
-            handleChefName(chefId)
-                .then(name => {
-                    setChefName(name);
-                });
-        }, [chefId]);
+    //     useEffect(() => {
+    //         handleChefName(chefId)
+    //             .then(name => {
+    //                 setChefName(name);
+    //             });
+    //     }, [chefId]);
     
-        return (
-            <span className="chef">by: {chefName}</span>
-        );
-    }
+    //     return (
+    //         <span className="chef">by: {chefName}</span>
+    //     );
+    // }
     
     return (
         <>
@@ -88,11 +88,11 @@ function DisplayComponents(data)
                 <h1 className="app-title">Recipes ({data.data.length} results)</h1>
                 <div className="recipe-grid">
                     {data.data.map(data => (
-                        <div className="recipe">
+                        <div className="recipe" key={data._id}>
                             <img className="meal-photo" src={data.imageURL} alt="Meal Photo" />
-                            <h2 className="meal-name">{data.name} <span className="cuisine"><CuisineNameLoader cuisineId={data.cuisine} /></span></h2>
+                            <h2 className="meal-name">{data.name} <span className="cuisine">{data.cuisine.name}</span></h2>
                            {/*<p>{data.description}</p>*/}
-                            <a className='chef-link'onClick={goToChef}><ChefNameLoader chefId={data.chef} /></a>
+                            <a className='chef-link'onClick={goToChef}>{data.chef.name}</a>
                             <p><strong>Cooking type: </strong><u>{data.cookingType}</u></p>
                             <p><strong>Categories: </strong><u>{data.category.join(', ')}</u></p>
                             <p><strong>Budget:</strong> {data.budget}</p>
@@ -101,7 +101,7 @@ function DisplayComponents(data)
                                   {data.ingredients.map(food => <li>{food}</li>)}
                             </ul>*/}
                             <p>{data.likedBy.length}🖤</p>
-                            <button onClick={() => handleLike(data)} className="like-button" disabled={likedBy.includes(data.id)}>Like</button>  
+                            {sessionStorage.getItem('isChef') === 'false' && <button onClick={() => handleLike(data)} className="like-button" disabled={likedBy.includes(data.id)}>Like</button>}
                             <button onClick={() => goToDetails(data)} className="details-button">Details</button>
                         </div>
                     ))}

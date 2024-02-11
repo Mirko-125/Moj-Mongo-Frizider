@@ -37,6 +37,11 @@ function LogIn() {
         .then(data => {
             console.log(data);
             sessionStorage.setItem('userId', data._id)
+            let isChef = false
+            if (data.userType === "Chef") {
+                isChef = true
+            }
+            sessionStorage.setItem('isChef', isChef);
             navigate('/fridge');
         })
     };
