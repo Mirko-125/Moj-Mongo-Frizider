@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useParams , useNavigate} from 'react-router-dom';
 import '../styles/CreateRecipe.css';
 import SearchableSelect from '../components/SearchableSelect';
 
@@ -16,7 +16,7 @@ function CreateRecipe(){
     const [recipeBudget, setRecipeBudget] = useState('');
     const [recipeDescription, setRecipeDescription] = useState('');
 
-    const [recipeIngredientsIds, setRecipeIngredientsIds] = useState([]);
+    const [recipeChef, setRecipeChef] = useState({});
     const [usedIngredients, setUsedIngredients] = useState([]);
     const [showIngredients, setShowIngredients] = useState(false);
     
@@ -26,11 +26,12 @@ function CreateRecipe(){
     const [allCuisines, setAllCuisines] = useState([]);
     const [key, setKey] = useState(0);
     const navigate = useNavigate();
-
+    const [Recipe, setRecipe] = useState({});
+    const { recipeId } = useParams();
     const [showUpdateInfo, setShowUpdateInfo] = useState(false);
     const [showCreateInfo, setShowCreateInfo] = useState(false);
 
-    const Recipe = JSON.parse(sessionStorage.getItem('recipe'));
+    const chefAdd = sessionStorage.getItem('userId');
     
     useEffect(() => {
       setPlaceholder("Select an ingredient...")
@@ -51,17 +52,23 @@ function CreateRecipe(){
         .then(response => response.json())
         .then(data => setAllCuisines(data));
 
-        if(Recipe != undefined ){
+        fetch(`http://localhost:3000/user/byid/${chefAdd}`)
+        .then(response => response.json())
+        .then(data => setRecipeChef(data));
+
+        if( recipeId != undefined ){
           setShowUpdateInfo(true);
-          setRecipeName(Recipe.name);
-          setRecipeImage(Recipe.imageURL);
-          setRecipeDescription(Recipe.description);
-          setRecipeBudget(Recipe.budget);
-          setRecipeCookingType(Recipe.cookingType);
-          setRecipeCuisine(Recipe.cuisine);
-          setRecipeCategories(Recipe.category.join(', '));
-          setRecipeIngredientsIds(Recipe.ingredients);
-        }
+          fetch(`http://localhost:3000/recipe/${recipeId}`)
+          .then(response => response.json())
+          .then(data => {setRecipe(data);
+            console.log(data);
+            setRecipeName(data.name);
+            setRecipeBudget(data.budget);
+            setRecipeCategories(data.category.join(', '));
+            setRecipeCuisine(data.cuisine.name);
+            setRecipeDescription(data.description);
+            setRecipeImage(data.imageURL);});
+         }
         else
         {
           setShowCreateInfo(true);
@@ -69,8 +76,14 @@ function CreateRecipe(){
     }, []);
 
     useEffect(() => {
-      if(Recipe != undefined ){
-        var list = handleFind();
+      console.log(Recipe);
+    }, [Recipe]);
+
+    useEffect(() => {
+      console.log(recipeId);
+      if(recipeId != undefined ){
+        const list = handleFind();
+        console.log("Lista:"+ list);
         setUsedIngredients(list); 
         setRecipeIngredients(list);
         setShowIngredients(true);
@@ -78,21 +91,19 @@ function CreateRecipe(){
     }, [allIngredients]);
 
     const handleFind = () => {
-      if(recipeIngredientsIds.length>0)
-      {   var lista=[]
-          recipeIngredientsIds.forEach(element => {
-            var found= allIngredients.find(ing => ing._id == element);
-            if(found)
-            {
-              if (!lista.some(item => item._id === found._id))
-              {
-                lista.push(found);
+      const lista = [];
+      if (Object.keys(Recipe).length !== 0 ) {
+          Recipe.ingredients.forEach(element => {
+              var found = allIngredients.find(ing => ing._id === element._id);
+              if (found) { 
+                  if (!lista.some(item => item._id === found._id)) {
+                      lista.push(found);
+                  }
               }
-            }
           });
       }
       return lista;
-    };
+  };
 
     useEffect(() => {
       let ingredientArea = document.getElementById("chosen-ingredients");
@@ -178,7 +189,7 @@ function CreateRecipe(){
         cookingType: recipeCookingType ? recipeCookingType : cookingTypes[0],
         budget: recipeBudget,
         ingredientIds: listIds,
-        cuisineId: recipeCuisine ? recipeCuisine : allCuisines[0]._id,  
+        cuisineId: recipeCuisine._id ? recipeCuisine._id : allCuisines[0]._id,  
       };
       const data = JSON.stringify(recipeData);
       console.log(data);
@@ -200,7 +211,7 @@ function CreateRecipe(){
             console.error(error);
         });
         
-        navigate(`/chef`)
+        navigate(`/chef/${recipeChef.name}`);
     };
 
     const handleUpdateRecipe = () => {
@@ -222,7 +233,7 @@ function CreateRecipe(){
         cookingType: recipeCookingType ? recipeCookingType : cookingTypes[0],
         budget: recipeBudget,
         ingredientIds: listIds,
-        cuisineId: recipeCuisine ? recipeCuisine : allCuisines[0]._id,  
+        cuisineId: recipeCuisine._id ? recipeCuisine._id : allCuisines[0]._id,    
       };
       const data = JSON.stringify(recipeData);
       console.log(data);
@@ -242,13 +253,20 @@ function CreateRecipe(){
               // Handle the error if needed
               console.error(error);
           });
-          sessionStorage.removeItem('recipe');
-          navigate(`/chef`)
+          
+          navigate(`/chef/${Recipe.chef.name}`);
     };
 
     const handleCancel = () => {
-      sessionStorage.removeItem('recipe');
-      navigate(`/chef`)
+      if(recipeId != undefined)
+      {
+        navigate(`/chef/${Recipe.chef.name}`);
+      }
+      else
+      {
+        navigate(`/chef/${recipeChef.name}`);
+      }
+      
     };
   
     return(
@@ -321,7 +339,7 @@ function CreateRecipe(){
                 </div>
             </div>
                 <h3>Describe making process:</h3>
-                <textarea name="description" id="1" cols="30" rows="20" value= {recipeDescription}  onChange={(e) => setRecipeDescription(e.target.value)}></textarea>
+                <textarea name="description" id="1" cols="30" rows="20" value={recipeDescription}  onChange={(e) => setRecipeDescription(e.target.value)}></textarea>
                 <div className='div-buttons'>
                 {showCreateInfo &&(
                 <button className='chef-button tall add-recipe'onClick={() => handleAddRecipe()} >Add Recipe</button>

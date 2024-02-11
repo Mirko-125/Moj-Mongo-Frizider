@@ -24,7 +24,8 @@ const router = createBrowserRouter([
   { path: '/signup', element: <Signup />},
   { path: '/recipe/:recipeId', element: <Details />},
   { path: '/cheffportfolio/*', element: <CheffPortfolio />},
-  { path: '/createRecipe/*', element: <CreateRecipe />}
+  { path: '/createRecipe', element: <CreateRecipe />},
+  { path: '/updateRecipe/:recipeId', element: <CreateRecipe />}
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')).render(

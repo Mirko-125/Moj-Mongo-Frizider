@@ -8,7 +8,7 @@ function DetailedRecipe() {
     const [recommendations, setRecommendations] = useState([]);
     const [recipe, setRecipe] = useState({});
     const { recipeId } = useParams();
-
+    const navigate = useNavigate();
     const handleAuthorClick = (chefName) => 
     {
         return `/chef/${chefName}`;
@@ -16,14 +16,9 @@ function DetailedRecipe() {
 
     const goBack = () =>
     {
+        navigate('/fridge');
     }
 
-    /*useEffect(() => {
-        console.log("dcgvcxfbf");
-        fetch('http://localhost:3000/Recipe')
-            .then(response => response.json())
-            .then(data => setRecommendations(data));
-    }, []);*/
 
     useEffect(() => {
         fetch(`http://localhost:3000/recipe/getrecommendations/${recipeId}`)
@@ -33,11 +28,10 @@ function DetailedRecipe() {
             .then(response => response.json())
             .then(data => {setRecipe(data);
                 console.log(data);});
-            
     }, []);
     
     const goToUpdatePage = (recipeId) => {
-        return `/recipeCreate/${recipeId}`;
+        return `/updateRecipe/${recipeId}`;
     }
 
 
@@ -87,7 +81,7 @@ function DetailedRecipe() {
                     <p className="money"><strong>Budget: </strong><span className="the-green">{recipe.budget}</span></p>
                     <h4 className="tags">Ingredients:</h4>
                             <ul> 
-                                  {/*{recipe.ingredients.map(food => <li>{food}</li>)}*/}
+                                  {recipe.ingredients.map(food => <li>{food.name}</li>)}
                             </ul>
                             <Link to={handleAuthorClick(recipe.chef.name)} className='author'>by: {recipe.chef.name}</Link>
                 </div>
@@ -97,10 +91,6 @@ function DetailedRecipe() {
             {Object.keys(recipe).length !== 0 &&(
              <div className="lists">
                 <div className="list">
-                   {/* <p className="list-title">Ingredients:</p>
-                    <p className="list-items">
-                        {recipeIngredients}
-                    total of <span className="total">{Recipe.ingredients.length}</span> ingredients.</p>*/}
                     <p className="list-title">Preparation process:</p>
                     <div className="description-long" >
                         <p>{recipe.description}</p><br/>
