@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import '../styles/CreateRecipe.css';
 import SearchableSelect from '../components/SearchableSelect';
@@ -12,10 +11,14 @@ function CreateRecipe(){
     const [recipeImage, setRecipeImage] = useState('');
     const [recipeIngredients, setRecipeIngredients] = useState([]);
     const [recipeCuisine, setRecipeCuisine] = useState('');
-    const [recipeCategories, setRecipeCategories] = useState('');
+    const [recipeCategories, setRecipeCategories] = useState("");
     const [recipeCookingType, setRecipeCookingType] = useState('');
     const [recipeBudget, setRecipeBudget] = useState('');
     const [recipeDescription, setRecipeDescription] = useState('');
+
+    const [recipeIngredientsIds, setRecipeIngredientsIds] = useState([]);
+    const [usedIngredients, setUsedIngredients] = useState([]);
+    const [showIngredients, setShowIngredients] = useState(false);
     
     const [selectedIngredient, setSelectedIngredient] = useState({});
     const [placeholder, setPlaceholder] = useState("");
@@ -23,10 +26,12 @@ function CreateRecipe(){
     const [allCuisines, setAllCuisines] = useState([]);
     const [key, setKey] = useState(0);
     const navigate = useNavigate();
-    const location = useLocation();
-    const searchParams = new URLSearchParams(location.search);
-    const chefName = searchParams.get('chefname');
 
+    const [showUpdateInfo, setShowUpdateInfo] = useState(false);
+    const [showCreateInfo, setShowCreateInfo] = useState(false);
+
+    const Recipe = JSON.parse(sessionStorage.getItem('recipe'));
+    
     useEffect(() => {
       setPlaceholder("Select an ingredient...")
       fetch('http://localhost:3000/ingredient')
@@ -45,22 +50,83 @@ function CreateRecipe(){
         fetch('http://localhost:3000/cuisine')
         .then(response => response.json())
         .then(data => setAllCuisines(data));
+
+        if(Recipe != undefined ){
+          setShowUpdateInfo(true);
+          setRecipeName(Recipe.name);
+          setRecipeImage(Recipe.imageURL);
+          setRecipeDescription(Recipe.description);
+          setRecipeBudget(Recipe.budget);
+          setRecipeCookingType(Recipe.cookingType);
+          setRecipeCuisine(Recipe.cuisine);
+          setRecipeCategories(Recipe.category.join(', '));
+          setRecipeIngredientsIds(Recipe.ingredients);
+        }
+        else
+        {
+          setShowCreateInfo(true);
+        }
     }, []);
 
+    useEffect(() => {
+      if(Recipe != undefined ){
+        var list = handleFind();
+        setUsedIngredients(list); 
+        setRecipeIngredients(list);
+        setShowIngredients(true);
+      }
+    }, [allIngredients]);
+
+    const handleFind = () => {
+      if(recipeIngredientsIds.length>0)
+      {   var lista=[]
+          recipeIngredientsIds.forEach(element => {
+            var found= allIngredients.find(ing => ing._id == element);
+            if(found)
+            {
+              if (!lista.some(item => item._id === found._id))
+              {
+                lista.push(found);
+              }
+            }
+          });
+      }
+      return lista;
+    };
+
+    useEffect(() => {
+      let ingredientArea = document.getElementById("chosen-ingredients");
+      ingredientArea.innerHTML = ""; 
+      usedIngredients.forEach(ingredient => {
+        const button = document.createElement("button");
+        button.className = "select-ingredient";
+        button.addEventListener("click", () => {
+          setRecipeIngredients(prevIngredients => {
+            return prevIngredients.filter(item => item._id !== ingredient._id);
+          });
+          button.remove(); 
+        });
+        button.textContent = ingredient.name; 
+        ingredientArea.appendChild(button);
+      });
+      setShowIngredients(false);
+    }, [showIngredients]);
+    
+
+    useEffect(() => {
+      console.log(recipeIngredients);
+    }, [showIngredients]);
+    
     const handleRefreshPlaceholder = () => {
         setPlaceholder('Select an ingredient...');
         // Increment the key to remount the component
         setKey(prevKey => prevKey + 1);
       };
-   
+    
     
     const handleSelect = (selectedOption) => {
         setSelectedIngredient(selectedOption);
     };
-
-    useEffect(() => {
-      console.log(recipeIngredients);
-    }, [recipeIngredients]);
 
      var AllInputsFilled = () => {
         if ( recipeName == "" || recipeDescription == "" || recipeBudget == "" || recipeIngredients.length  == 0 || recipeCategories  == "" )
@@ -73,6 +139,7 @@ function CreateRecipe(){
 
     const handleAddIngredient = () => {
         handleRefreshPlaceholder();
+        
         if (Object.keys(selectedIngredient).length === 0)
         {
           return;
@@ -80,16 +147,16 @@ function CreateRecipe(){
         let ingredientArea = document.getElementById("chosen-ingredients");
         if (!recipeIngredients.some(item => item._id === selectedIngredient._id))
         {
-            setRecipeIngredients([...recipeIngredients, selectedIngredient]);;
-            const button = document.createElement("button");
-            button.className = "select-ingredient";
-            button.addEventListener("click", () => {
-                setRecipeIngredients(prevIngredients => {
-                  return prevIngredients.filter(ingredient => ingredient.name !== button.textContent);
-              });
-              button.remove(); });
-            button.textContent = selectedIngredient.name;
-            ingredientArea.appendChild(button);
+          setRecipeIngredients([...recipeIngredients, selectedIngredient]);
+          const button = document.createElement("button");
+          button.className = "select-ingredient";
+          button.addEventListener("click", () => {
+              setRecipeIngredients(prevIngredients => {
+                return prevIngredients.filter(ingredient => ingredient.name !== button.textContent);
+            });
+            button.remove(); });
+          button.textContent = selectedIngredient.name;
+          ingredientArea.appendChild(button);
         }
     };
 
@@ -99,7 +166,6 @@ function CreateRecipe(){
       {
         return;
       }
-
       let listIds=[];
       recipeIngredients.forEach(ing=>{
         listIds=[...listIds,ing._id];})
@@ -113,17 +179,17 @@ function CreateRecipe(){
         budget: recipeBudget,
         ingredientIds: listIds,
         cuisineId: recipeCuisine ? recipeCuisine : allCuisines[0]._id,  
-    };
-    const data = JSON.stringify(recipeData);
-    console.log(data);
-    fetch('http://localhost:3000/recipe', {
+      };
+      const data = JSON.stringify(recipeData);
+      console.log(data);
+      fetch('http://localhost:3000/recipe', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
         credentials: 'include',
         body: data
-    })
+      })
         .then(response => response.json())
         .then(data => {
             console.log(data);
@@ -133,36 +199,94 @@ function CreateRecipe(){
             // Handle the error if needed
             console.error(error);
         });
+        
         navigate(`/chef`)
-  };
+    };
+
+    const handleUpdateRecipe = () => {
+        
+      if(!AllInputsFilled())
+      {
+        return;
+      }
+      let listIds=[];
+      recipeIngredients.forEach(ing=>{
+        listIds=[...listIds,ing._id];
+      })
+      const categoriesList = recipeCategories.split(',').map(item => item.trim());
+      const recipeData = {
+        name: recipeName,
+        imageURL: recipeImage ? recipeImage : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQhlL5GueEHuV1mUPSf2M-gd4vt6aRqnsNQ1g&usqp=CAU",
+        description: recipeDescription,
+        category: categoriesList,
+        cookingType: recipeCookingType ? recipeCookingType : cookingTypes[0],
+        budget: recipeBudget,
+        ingredientIds: listIds,
+        cuisineId: recipeCuisine ? recipeCuisine : allCuisines[0]._id,  
+      };
+      const data = JSON.stringify(recipeData);
+      console.log(data);
+      fetch(`http://localhost:3000/recipe/${Recipe._id}`, {
+          method: 'PATCH',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          credentials: 'include',
+          body: data
+      })
+          .then(response => response.json())
+          .then(data => {
+              console.log(data);
+          })
+          .catch(error => {
+              // Handle the error if needed
+              console.error(error);
+          });
+          sessionStorage.removeItem('recipe');
+          navigate(`/chef`)
+    };
+
+    const handleCancel = () => {
+      sessionStorage.removeItem('recipe');
+      navigate(`/chef`)
+    };
   
     return(
         <div className='recipe-page'>
             <div></div>
             <div className='recipe-info'>
+            {showCreateInfo &&(
             <h1>Create new recipe:</h1>
+            )}
+            {showUpdateInfo &&(
+            <h1>Edit your recipe:</h1>
+            )}
             <input
               className='createRecipe-input' 
               type="text" 
-              placeholder="Recipe name" 
+              placeholder="Recipe name"
+              value= {recipeName}   
               onChange={(e) => setRecipeName(e.target.value)}
             />
             <input 
               className='createRecipe-input'
               type="text" 
               placeholder="Categories" 
+              value= {recipeCategories} 
               onChange={(e) => setRecipeCategories(e.target.value)}
             />
              <input
               className='createRecipe-input' 
               type="text" 
-              placeholder="Recipe budget" 
+              placeholder="Recipe budget"
+              value= {recipeBudget}  
               onChange={(e) => setRecipeBudget(e.target.value)}
             />
             <input 
               className='createRecipe-input'
               type="text" 
               placeholder="ImageURL" 
+              value= {recipeImage} 
               onChange={(e) => setRecipeImage(e.target.value)}
             />
             <label className='label-choose' >Choose a cooking type:</label>
@@ -197,8 +321,16 @@ function CreateRecipe(){
                 </div>
             </div>
                 <h3>Describe making process:</h3>
-                <textarea name="description" id="1" cols="30" rows="20" onChange={(e) => setRecipeDescription(e.target.value)}></textarea>
+                <textarea name="description" id="1" cols="30" rows="20" value= {recipeDescription}  onChange={(e) => setRecipeDescription(e.target.value)}></textarea>
+                <div className='div-buttons'>
+                {showCreateInfo &&(
                 <button className='chef-button tall add-recipe'onClick={() => handleAddRecipe()} >Add Recipe</button>
+                )}
+                {showUpdateInfo &&(
+                <button className='chef-button tall add-recipe' onClick={() =>handleUpdateRecipe()} >Update Recipe</button>
+                )}
+                <button className='chef-button tall add-recipe' onClick={() =>handleCancel()} >Cancel</button>
+                </div>
         </div>
         <div></div>
         </div>

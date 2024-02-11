@@ -48,6 +48,10 @@ export class UserController {
   async findOne(@Param('name') name: string) {
     return await this.userService.findOneByName(name);
   }
+  @Get('byid/:id')
+  async findOneWithId(@Param('id') id: string) {
+    return await this.userService.findById(id);
+  }
 
   @Patch()
   async update(@Session() session: UserInfo, @Body() updateUserDto: UpdateUserDto) {

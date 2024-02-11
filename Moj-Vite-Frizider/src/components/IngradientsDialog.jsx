@@ -50,7 +50,6 @@ function IngredientsDialog({ isOpen, onClose }) {
     };
 
     const handleFindIngredient = () => {
-      console.log(selectedIngredient.name)
       fetch(`http://localhost:3000/ingredient/${selectedIngredient._id}`)
         .then(response => response.json())
         .then(data =>{
@@ -64,8 +63,7 @@ function IngredientsDialog({ isOpen, onClose }) {
         .catch(error => {
           // Handle error if fetch fails
           console.error('Error fetching ingredients:', error);
-        });
-       
+        });  
     };
 
     const handleCreateIngredient = () => {

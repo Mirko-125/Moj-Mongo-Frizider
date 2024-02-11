@@ -28,7 +28,7 @@
 }
 
 .title-desc {
-    font-size: 2rem;
+    font-size: 3rem;
     font-weight: normal;
     font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
     padding: 0.5rem;
@@ -36,15 +36,14 @@
 }
 
 .description-long {
-    padding: 0.5rem;
-    margin: 0;
+    background-color: #f0c6d1;
     font-size: larger;
     user-select: text;
 }
 
 .tags {
-    margin: 0;
     padding: 0.5rem;
+    margin: 0;
 }
 
 .author {
@@ -207,4 +206,8 @@
     font-size: x-large;
     padding-top: 10px;
     margin: 0;
+}
+
+.prep{
+    padding-left: 0.5rem;
 }

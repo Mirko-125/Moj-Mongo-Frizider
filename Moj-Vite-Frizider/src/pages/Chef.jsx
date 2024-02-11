@@ -32,7 +32,7 @@ function Chef() {
   };
   
   const handleCreateRecipe = () => {
-    navigate(`/createRecipe?chefName=${chefName}`);
+    navigate(`/createRecipe`);
   }
 
     const handleFindChef = () => {

@@ -9,6 +9,15 @@ function Fridge() {
 
   let usedIngredients = [];
 
+  useEffect(() => {
+    fetch('http://localhost:3000/recipe')
+    .then(response => response.json())
+    .then(data => {
+      setRecipes(data);
+      console.log(data);
+    })
+  },[]);
+
   const handleSelectIngredient = (ingredient) => {
     let ingredientArea = document.getElementById("ingredients");
     if (!ingredients.includes(ingredient.name)) 
@@ -26,20 +35,20 @@ function Fridge() {
     }
   }
 
-  useEffect(() => {
-    const data = ingredients.flatMap(ing => ing._id);
-    fetch('http://localhost:3000/recipe', {
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      method: 'PUT',
-      body: JSON.stringify(data)
-    })
-    .then(response => response.json())
-    .then(data => {
-      setRecipes(data);
-    })
-  }, [ingredients]); // Empty dependency array means this effect runs once on mount
+   useEffect(() => {
+     const data = ingredients.flatMap(ing => ing._id);
+     fetch('http://localhost:3000/recipe', {
+       headers: {
+         'Content-Type': 'application/json'
+       },
+       method: 'PUT',
+       body: JSON.stringify(data)
+     })
+     .then(response => response.json())
+     .then(data => {
+       //setRecipes(data);
+     })
+   }, [ingredients]); // Empty dependency array means this effect runs once on mount
 
   useEffect(() => {
     fetch('http://localhost:3000/ingredient')
@@ -74,7 +83,7 @@ function Fridge() {
               ))}
         </div>
       </div>
-      {recipes && <DisplayComponent data={recipes} className="display-component"/>}
+      <DisplayComponent data={recipes} className="display-component"/>
     </div>
   )
 }
