@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import SearchableSelect from '../components/SearchableSelect';
 import DisplayComponent from "../components/DIsplayComponent"
 import '../styles/Fridge.css'
 
@@ -6,15 +7,24 @@ function Fridge() {
   const [recipes, setRecipes] = useState([]);
   const [ingredients, setIngredients] = useState([]);
   const [categories, setCategories] = useState([]);
-
+  const [ingredientsForSelect, setIngredientsForSelect] = useState([]);
+  const [selectedIngredient, setSelectedIngredient] = useState({});
+  const [reloadData, setReloadData] = useState(false);
+  const [placeholder, setPlaceholder] = useState("");
+  const [key, setKey] = useState(0);
 
   useEffect(() => {
+    setPlaceholder("Select an ingredient");
     fetch('http://localhost:3000/recipe')
     .then(response => response.json())
     .then(data => {
       setRecipes(data);
       console.log(data);
     })
+  },[]);
+
+  useEffect(() => {
+    setPlaceholder("Select an ingredient");
   },[]);
 
   const handleSelectIngredient = (ingredient) => {
@@ -49,7 +59,7 @@ function Fridge() {
       })
       .then(response => response.json())
       .then(data => {
-        setRecipes(data);
+        //setRecipes(data);
       })
     } else {
       fetch('http://localhost:3000/recipe')
@@ -66,14 +76,40 @@ function Fridge() {
     .then(data => {
       console.log(data);
       setCategories(data);
+      const allIngredients = data.reduce((acc, category) => {
+        return [...acc, ...category.ingredients];
+      }, []);
+     setIngredientsForSelect(allIngredients);
     })
   }, []);   
 
+  const handleSelect = (selectedOption) => {
+    console.log(selectedOption);
+    setSelectedIngredient(selectedOption);
+  };
+  const handleRefreshPlaceholder = () => {
+    setPlaceholder('Select an ingredient...');
+    // Increment the key to remount the component
+    setKey(prevKey => prevKey + 1);
+  };
+  const handleReloadData = () => {
+    handleRefreshPlaceholder();
+    
+    setReloadData(prevState => !prevState);
+  };
+  useEffect(() => {
+    console.log(selectedIngredient);
+     //handleSelectIngredient(selectedIngredient);
+     handleReloadData();
+     setSelectedIngredient("");
+  }, [selectedIngredient]); 
 
   return (
     <div className="fridge-page">
       <div className="diy-fridge">
-        <input className="searchbox" type="text" placeholder="Search..."/>
+        <div>
+          <SearchableSelect key={key} options={ingredientsForSelect} onSelect={() =>{handleSelect()}} placeholder={placeholder} />
+       </div>
         <div className="ingredients">
           <h3 className="sub-title">Your ingredients</h3>
             <div id="ingredients" className="mini-ingredients"/>

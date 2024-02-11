@@ -49,7 +49,7 @@ Content-Type: application/json
 }
 
 ### Get Recipe
-GET http://localhost:3000/Recipe/65c5f9da9a2510fdc96eb126
+GET http://localhost:3000/Recipe/65c7948a28d9432cfc674e53
 
 ### GET ALL
 GET http://localhost:3000/Recipe

@@ -8,7 +8,7 @@ import Login from './pages/LogIn.jsx'
 import Signup from './pages/SignUp.jsx'
 import CheffPortfolio from './pages/CheffPortfolio.jsx'
 import CreateRecipe from './pages/CreateRecipe.jsx'
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider, Link } from 'react-router-dom';
 
 // export const APIPath = ([suffixes]) => {
 //   console.log(suffixes);
@@ -19,10 +19,10 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 const router = createBrowserRouter([
   { path: '/fridge', element: <Fridge />},
-  { path: '/chef', element: <Chef />},
+  { path: '/chef/:chefName', element: <Chef />},
   { path: '/', element: <Login />},
   { path: '/signup', element: <Signup />},
-  { path: '/recipe/*', element: <Details />},
+  { path: '/recipe/:recipeId', element: <Details />},
   { path: '/cheffportfolio/*', element: <CheffPortfolio />},
   { path: '/createRecipe/*', element: <CreateRecipe />}
 ]);

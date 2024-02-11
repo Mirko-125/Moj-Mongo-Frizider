@@ -5,18 +5,18 @@ import IngredientsDialog from '../components/IngradientsDialog';
 import CuisinesDialog from '../components/CuisinesDialog';
 import '../styles/Chef.css';
 import '../styles/Fridge.css'
-
+import { useParams } from 'react-router-dom';
 
 function Chef() {
     const [chefId, setChefId] = useState('');
-    const [chefName, setChefName] = useState('');
     const [chefEmail, setChefEmail] = useState('');
+    const [chefRName, setChefRName] = useState('');
     const [recipes, setChefRecipes] = useState([]);
     const [singleChef, setSingleChef] = useState([]);
     const [showIngredientsDialog, setShowIngredientsDialog] = useState(false);
     const [showCuisinesDialog, setShowCuisinesDialog] = useState(false);
     const navigate = useNavigate();
-
+    const { chefName } = useParams();
   const openIngredientsDialog = () => {
     setShowIngredientsDialog(true);
   };
@@ -36,15 +36,16 @@ function Chef() {
   }
 
     const handleFindChef = () => {
-      return fetch(`http://localhost:3000/user/getwithrecipes/Gordon Ramsay`)
+      return fetch(`http://localhost:3000/user/getwithrecipes/${chefName}`)
           .then(response => response.json())
           .then(data => {
             console.log(data);
             setChefId(data._id);
-            setChefName(data.name);
             setChefEmail(data.email);
             setChefRecipes(data.recipes);
+            console.log(data);
               return data;
+
           })
           .catch(error => {
               console.error(error);
@@ -53,10 +54,8 @@ function Chef() {
       };
 
       useEffect(() => {
-        if (!chefName){
           handleFindChef();
-        }
-    }, []);
+    }, [chefName]);
 
     return (
       <div className='chef-page'>

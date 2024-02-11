@@ -2,84 +2,44 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/DetailedRecipe.css';
 import DisplayComponent from "../components/DIsplayComponent"
+import { useParams, Link } from 'react-router-dom';
 
 function DetailedRecipe() {
     const [recommendations, setRecommendations] = useState([]);
-    const [recipeCuisine, setRecipeCuisine] = useState('');
-    const [recipeChef, setRecipeChef] = useState('');
-    const [recipeIngredients, setRecipeIngredients] = useState([]);
-    const navigate = useNavigate();
+    const [recipe, setRecipe] = useState({});
+    const { recipeId } = useParams();
 
-    const handleAuthorClick = () => 
+    const handleAuthorClick = (chefName) => 
     {
-        console.log("Author clicked");
-        //sessionStorage.setItem('cheff', JSON.stringify(Recipe));
-        //navigate(`/cheffportfolio/${Recipe.cheff}`);
+        return `/chef/${chefName}`;
     }
 
     const goBack = () =>
     {
-        sessionStorage.removeItem('recipe');
-        navigate(`/fridge`);
     }
+
+    /*useEffect(() => {
+        console.log("dcgvcxfbf");
+        fetch('http://localhost:3000/Recipe')
+            .then(response => response.json())
+            .then(data => setRecommendations(data));
+    }, []);*/
 
     useEffect(() => {
         fetch('http://localhost:3000/Recipe')
             .then(response => response.json())
             .then(data => setRecommendations(data));
+        fetch(`http://localhost:3000/recipe/${recipeId}`)
+            .then(response => response.json())
+            .then(data => {setRecipe(data);
+                console.log(data);});
+            
     }, []);
-
-    const Recipe = JSON.parse(sessionStorage.getItem('recipe'));
-
-    useEffect(() => {
-        fetch(`http://localhost:3000/cuisine/${Recipe.cuisine}`)
-       .then(response => response.json())
-       .then(data => {
-           setRecipeCuisine(data);
-       })
-       .catch(error => {
-           // Handle error if fetch fails
-           console.error('Error fetching cuisine:', error);
-       });
-       fetch(`http://localhost:3000/user/byid/${Recipe.chef}`)
-       .then(response => response.json())
-       .then(data => {
-           setRecipeChef(data);
-       })
-       .catch(error => {
-           // Handle error if fetch fails
-           console.error('Error fetching cuisine:', error);
-       });
-   }, []);
-
-   useEffect(() => {
-    handleFind()
-        .then(ingredients => {
-            setRecipeIngredients(ingredients);
-            console.log(ingredients);
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
- }, [recipeCuisine]);
-    const handleFind = async () => {
-        const promises = Recipe.ingredients.map(ingredientId => {
-            return fetch(`http://localhost:3000/ingredient/${ingredientId}`)
-                .then(response => response.json())
-                .then(data => data.name)
-                .catch(error => {
-                    console.error('Error fetching ingredients:', error);
-                    return ''; // Return empty string in case of an error
-                });
-        });
-
-        return Promise.all(promises);
-    };
-
-    const goToUpdatePage = () =>
-    {
-        navigate(`/createRecipe/${Recipe.name}`);
+    
+    const goToUpdatePage = (recipeId) => {
+        return `/recipeCreate/${recipeId}`;
     }
+
 
     const Comments = [
      {
@@ -112,24 +72,30 @@ function DetailedRecipe() {
     return (
         <div className="details-all">
             <button className="details-button edge" onClick={() => goBack()}>Back</button>
-           {Recipe.chef == sessionStorage.getItem('userId') && (
-            <button className="details-button edge" onClick={() => goToUpdatePage()}>Update</button>
+            {console.log(Object.keys(recipe).length === 0)}
+           {Object.keys(recipe).length !== 0 && recipe.chef._id == sessionStorage.getItem('userId') && (
+            <Link to={goToUpdatePage(recipe._id)} className='recipe-link'><button className="details-button edge">Update</button></Link>
             )}
+            {Object.keys(recipe).length !== 0 &&(
             <div className="main-header">
-                <img src={Recipe.imageURL} alt="There was no photo for this recipe" className="thumb" />
+
+                <img src={recipe.imageURL} alt="There was no photo for this recipe" className="thumb" />
                 <div className="about">
-                    <p className="title-desc">{Recipe.name} <span className="cuisine">({recipeCuisine.name})</span></p><br/>
-                    <p className="tags"><strong>Cooking type: </strong><u >{Recipe.cookingType}</u></p>
-                    <p className="tags"><strong>Categoties: </strong><u >{Recipe.category.join(",")}</u></p>
-                    <p className="money"><strong>Budget: </strong><span className="the-green">{Recipe.budget}</span></p>
+                    <p className="title-desc">{recipe.name} <span className="cuisine">({recipe.cuisine.name})</span></p><br/>
+                    <p className="tags"><strong>Cooking type: </strong><u >{recipe.cookingType}</u></p>
+                    <p className="tags"><strong>Categoties: </strong><u >{recipe.category.join(",")}</u></p>
+                    <p className="money"><strong>Budget: </strong><span className="the-green">{recipe.budget}</span></p>
                     <h4 className="tags">Ingredients:</h4>
                             <ul> 
-                                  {recipeIngredients.map(food => <li>{food}</li>)}
+                                  {/*{recipe.ingredients.map(food => <li>{food}</li>)}*/}
                             </ul>
-                    <a className="author" onClick={() => handleAuthorClick()}> - by {recipeChef.name}</a>
+                            <Link to={handleAuthorClick(recipe.chef.name)} className='author'>by: {recipe.chef.name}</Link>
                 </div>
-            </div>
-            <div className="lists">
+            
+                </div>
+            )}
+            {Object.keys(recipe).length !== 0 &&(
+             <div className="lists">
                 <div className="list">
                    {/* <p className="list-title">Ingredients:</p>
                     <p className="list-items">
@@ -137,16 +103,16 @@ function DetailedRecipe() {
                     total of <span className="total">{Recipe.ingredients.length}</span> ingredients.</p>*/}
                     <p className="list-title">Preparation process:</p>
                     <div className="description-long" >
-                        <p>{Recipe.description}</p><br/>
+                        <p>{recipe.description}</p><br/>
                     </div>
                 </div>
                 <div className="list">
                     <p className="list-title">Loved by:</p>
                     <p className="list-items">
-                        {Recipe.likedBy.map(like => (
+                        {recipe.likedBy.map(like => (
                             <span>{like}, </span>
                         ))}
-                    total of <span className="total">{Recipe.likedBy.length}</span> likes.</p>
+                    total of <span className="total">{recipe.likedBy.length}</span> likes.</p>
                 </div>
                 <div className="list">
                     <p className="list-title">Recommended by:</p> 
@@ -154,6 +120,7 @@ function DetailedRecipe() {
                         <DisplayComponent data={recommendations} className="display-component"/></p> 
                 </div>
             </div>
+            )}
             <div className="comment-section">
                 <div className="comments">
                     <p className="list-title">Comments:</p>
@@ -171,7 +138,9 @@ function DetailedRecipe() {
                     ))}
                 </div>
             </div>
+            
         </div>
+       
     );
 }
 

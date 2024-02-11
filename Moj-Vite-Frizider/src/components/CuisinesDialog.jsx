@@ -79,14 +79,14 @@ function CuisinesDialog({ isOpen, onClose }) {
             name: cuisineName,
             description: cuisineDescription,
         };
-        console.log(cuisineData);
+        const data = JSON.stringify(cuisineData);
         fetch(`http://localhost:3000/cuisine/${cuisineId}`, {
           method: 'PATCH',
           headers: {
               'Content-Type': 'application/json'
           },
           credentials: 'include',
-          body: JSON.stringify(cuisineData)
+          body: data
         })
           .then(response => response.json())
           .then(data => {

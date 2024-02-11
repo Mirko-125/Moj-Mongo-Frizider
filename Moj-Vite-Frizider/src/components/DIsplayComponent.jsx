@@ -1,20 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/Recipes.css';
+import { Link } from 'react-router-dom';
 
 function DisplayComponents(data) 
 {
-    const navigate = useNavigate();
     const [likedBy, setLikedBy] = useState([]);
-
-    function goToDetails(data) {
-        sessionStorage.setItem('recipe', JSON.stringify(data));
-        navigate(`/recipe/${data.name}`);
-    }
+    
     useEffect(() => {
         console.log(data);
         
-    }, []);
+    }, [data]);
+
     function handleLike(data) {
         const updatedLikedBy = [...likedBy, data.id];
         console.log(data);
@@ -25,90 +22,34 @@ function DisplayComponents(data)
         setLikedBy(updatedLikedBy);
     }
 
-    const goToChef = () => {
-        navigate('/chef/');  
+    const goToChef = (chefName) => {
+       
+        return `/chef/${chefName}`;
     }
-
-    async function handleCuisineName(cuisineId) {
-        try {
-            const response = await fetch(`http://localhost:3000/cuisine/${cuisineId}`);
-            const data = await response.json();
-            return data.name;
-        } catch (error) {
-            console.error('Error fetching cuisine name:', error);
-            return ''; // Return an empty string in case of an error
-        }
-    }
-
-
-    function CuisineNameLoader({ cuisineId }) {
-        const [cuisineName, setCuisineName] = useState('');
-    
-        useEffect(() => {
-            handleCuisineName(cuisineId)
-                .then(name => {
-                    setCuisineName(name);
-                });
-        }, [cuisineId]);
-    
-        return (
-            <span className="cuisine">({cuisineName})</span>
-        );
-    }
-
-    async function handleChefName(chefId) {
-        try {
-            const response = await fetch(`http://localhost:3000/user/byid/${chefId}`);
-            const data = await response.json();
-            return data.name;
-        } catch (error) {
-            console.error('Error fetching chef name:', error);
-            return ''; // Return an empty string in case of an error
-        }
-    }
-    
-    function ChefNameLoader({ chefId }) {
-        const [chefName, setChefName] = useState('');
-    
-        useEffect(() => {
-            handleChefName(chefId)
-                .then(name => {
-                    setChefName(name);
-                });
-        }, [chefId]);
-    
-        return (
-            <span className="chef">by: {chefName}</span>
-        );
+    const goToRecipe = (recipeId) => {
+        return `/recipe/${recipeId}`;
     }
     
     return (
-        <>
-            <div id="app" className="display">
-                <h1 className="app-title">Recipes ({data.data.length} results)</h1>
-                <div className="recipe-grid">
-                    {data.data.map(data => (
-                        <div className="recipe">
-                            <img className="meal-photo" src={data.imageURL} alt="Meal Photo" />
-                            <h2 className="meal-name">{data.name} <span className="cuisine"><CuisineNameLoader cuisineId={data.cuisine} /></span></h2>
-                           {/*<p>{data.description}</p>*/}
-                            <a className='chef-link'onClick={goToChef}><ChefNameLoader chefId={data.chef} /></a>
-                            <p><strong>Cooking type: </strong><u>{data.cookingType}</u></p>
-                            <p><strong>Categories: </strong><u>{data.category.join(', ')}</u></p>
-                            <p><strong>Budget:</strong> {data.budget}</p>
-                            {/*<h4>Ingredients</h4>
-                                <ul className="foods-list"> 
-                                  {data.ingredients.map(food => <li>{food}</li>)}
-                            </ul>*/}
-                            <p>{data.likedBy.length}🖤</p>
-                            <button onClick={() => handleLike(data)} className="like-button" disabled={likedBy.includes(data.id)}>Like</button>  
-                            <button onClick={() => goToDetails(data)} className="details-button">Details</button>
-                        </div>
-                    ))}
-                </div>
-                <p className="footer">These {data.data.length} recipes were added successfully. Check back soon for updates.</p>
+        <div id="app" className="display-component">
+            <h1 className="app-title">Recipes ({data.data.length} results)</h1>
+            <div className="recipe-grid">
+                {data.data.map(recipe => (
+                    <div className="recipe" key={recipe._id}>
+                        <img className="meal-photo" src={recipe.imageURL} alt="Meal Photo" />
+                        <h2 className="meal-name">{recipe.name} <span className="cuisine">({recipe.cuisine.name})</span></h2>
+                        <Link to={goToChef(recipe.chef.name)} className='chef-link'>by: {recipe.chef.name}</Link>
+                        <p><strong>Cooking type: </strong><u>{recipe.cookingType}</u></p>
+                        <p><strong>Categories: </strong><u>{recipe.category.join(', ')}</u></p>
+                        <p><strong>Budget:</strong> {recipe.budget}</p>
+                        <p>{recipe.likedBy.length}🖤</p>
+                        <button onClick={() => handleLike(recipe)} className="like-button" disabled={likedBy.includes(recipe._id)}>Like</button>
+                        <Link to={goToRecipe(recipe._id)} className='recipe-link'><button className="details-button">Details</button></Link>
+                    </div>
+                ))}
             </div>
-        </>
+            <p className="footer">These {data.data.length} recipes were added successfully. Check back soon for updates.</p>
+        </div>
     );
 }
 export default DisplayComponents;

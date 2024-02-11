@@ -21,22 +21,22 @@ function IngredientsDialog({ isOpen, onClose }) {
       setReloadData(prevState => !prevState);
     };
     
-    // useEffect(() => {
-    //   setPlaceholder("Select an ingredient...")
-    //   fetch('http://localhost:3000/ingredient')
-    //       .then(response => response.json())
-    //     .then(data => {
-    //       // Flatten the array of ingredients
-    //       const allIngredients = data.reduce((acc, category) => {
-    //         return [...acc, ...category.ingredients];
-    //       }, []);
-    //       setIngredients(allIngredients);
-    //     })
-    //     .catch(error => {
-    //       // Handle error if fetch fails
-    //       console.error('Error fetching ingredients:', error);
-    //     });
-    // }, [handleReloadData]);
+     useEffect(() => {
+       setPlaceholder("Select an ingredient...")
+       fetch('http://localhost:3000/ingredient')
+           .then(response => response.json())
+         .then(data => {
+           // Flatten the array of ingredients
+           const allIngredients = data.reduce((acc, category) => {
+             return [...acc, ...category.ingredients];
+           }, []);
+          setIngredients(allIngredients);
+         })
+         .catch(error => {
+           // Handle error if fetch fails
+           console.error('Error fetching ingredients:', error);
+         });
+     }, [reloadData]);
     
 
     const handleSelect = (selectedOption) => {
