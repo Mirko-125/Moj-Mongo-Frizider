@@ -71,10 +71,28 @@ export class RecipeService {
         }
       },
       {
+        $lookup: {
+          from: 'users',
+          localField: 'chef',
+          foreignField: '_id',
+          as: 'chef'
+        }
+      },
+      {
+        $lookup: {
+          from: 'cuisines',
+          localField: 'cuisine',
+          foreignField: '_id',
+          as: 'cuisine'
+        }
+      },
+      {
           $project: {
               mappedIngredients: 0,
               ingredientsSubset: 0,
-              ingredientsCount: 0
+              ingredientsCount: 0,
+              'chef.password': 0,
+              'chef.recipes': 0 
           }
       }
     ]).exec();
@@ -84,8 +102,13 @@ export class RecipeService {
     return await this.cuisineModel.find({name}).populate('recipes').exec();
   }
 
+  async getRecommendations(id: string){
+    const recipe = await this.findOne(id);
+    
+  }
+
   async getAll(){
-    return await this.model.find().exec();
+    return await this.model.find().populate('chef cuisine').exec();
   }
 
   async likeRecipe(userId: string, recipeId: string) {

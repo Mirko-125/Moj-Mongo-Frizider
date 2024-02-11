@@ -20,6 +20,11 @@ export class RecipeController {
     return this.recipeService.findOne(id);
   }
 
+  @Get('/getrecommendations')
+  getRecommendations(@Param('id') id: string) {
+    return this.recipeService.getRecommendations(id);
+  }
+
   @Get()
   getAll(){
     return this.recipeService.getAll();
